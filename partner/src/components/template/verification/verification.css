@@ -1,0 +1,192 @@
+.form-container {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 5px;
+  z-index: 100;
+}
+
+.form-container::before {
+  content: "";
+  height: 120%;
+  width: 100%;
+  position: fixed;
+  background-color: rgb(85, 84, 84);
+  opacity: 0.5;
+  top: 0px;
+}
+.form-box {
+  width: 100%;
+  max-width: 880px;
+  background-color: white;
+  margin: 10px 0px 10px 0px;
+  border-radius: 5px;
+  z-index: 1;
+  max-height: 100%;
+  height: fit-content;
+  margin: auto;
+  overflow-y: auto;
+}
+.form-lgocon {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+}
+.form-lgocon img {
+  height: 50px;
+  margin: auto 15px;
+}
+.form-hdcon {
+  font-size: 26px;
+  font-family: sans-serif;
+  color: lightgreen;
+  padding-left: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  border-bottom: solid 1px grey;
+}
+.frm-table {
+  width: 100%;
+}
+.frm-table tr td:nth-child(1) {
+  font-size: 15px;
+  font-family: sans-serif;
+  color: #262626;
+  font-weight: bold;
+  padding-left: 20px;
+}
+.frm-table tr td:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+.frm-table tr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.frm-table tr td {
+  width: 50%;
+  min-width: 240px;
+  padding: 5px;
+}
+.frm-tableinp {
+  height: 30px;
+  width: 100%;
+  min-width: 240px;
+  max-width: 330px;
+  padding: 5px;
+  outline: none;
+}
+.rd-txt {
+  color: rgb(255, 16, 16);
+}
+.fil-selcon {
+  padding: 10px 5px 10px 20px;
+  width: 100%;
+}
+.fil-row {
+  min-height: 40px;
+  width: 100%;
+  padding: 5px 5px 5px 0px;
+  font-size: 15px;
+  font-family: sans-serif;
+  color: #262626;
+  font-weight: bold;
+}
+.croper-con {
+  width: 100%;
+  max-width: 500px;
+  height: 350px;
+  background-color: #cdcdcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  font-family: sans-serif;
+}
+.ReactCrop__image {
+  max-height: 350px;
+}
+.cropped-con {
+  margin: 10px 0px;
+}
+.cropped-img {
+  max-width: 260px;
+  max-height: 170px;
+}
+.crop-btn {
+  height: 30px;
+  width: 100px;
+  border: none;
+  background-color: #82d2ee;
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
+  margin: 10px;
+}
+.term-con {
+  font-family: sans-serif;
+  padding: 0px 5px 10px 20px;
+}
+.frm-sbmtbtn {
+  height: 30px;
+  min-width: 70px;
+  font-size: 16px;
+  font-family: sans-serif;
+  color: white;
+  border: none;
+  background-color: lightgreen;
+  border-radius: 5px;
+  padding: 0px 3px;
+  margin: 0px 5px;
+}
+.vrfd-con {
+  padding: 5px 20px;
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #404040;
+}
+.vrfd-span {
+  color: rgb(58, 255, 51);
+}
+/* removing increment and decrement from number input field  */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.al-div {
+  height: 30px;
+  padding: 5px;
+  border: solid 1px #767676;
+  width: 100%;
+  min-width: 240px;
+  max-width: 330px;
+}
+#stat {
+  height: 30px;
+  padding: 5px;
+  border: solid 1px #767676;
+  width: 60px;
+}
+@media (max-width: 500px) {
+  .frm-table tr td:nth-child(1) {
+    padding-left: 0px;
+  }
+  .fil-selcon {
+    padding-left: 5px;
+  }
+  .frm-table tr td {
+    width: 100%;
+  }
+  .term-con {
+    padding-left: 5px;
+  }
+}

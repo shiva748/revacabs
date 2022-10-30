@@ -1,0 +1,178 @@
+.multi-con{
+  height: calc(100vh - 85px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.blu-txt {
+  text-decoration: none;
+  color: rgb(53, 167, 212);
+  cursor: pointer;
+}
+.usr-prfl {
+  width: 80%;
+  display: flex;
+  margin-top: 15px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.prfl-aside {
+  width: calc(100% - 200px);
+  min-width: 260px;
+}
+.prfl-img {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+.prfl-img img {
+  border-radius: 50%;
+  position: absolute;
+  object-fit: cover;
+  height: 150px;
+  width: 150px;
+  z-index: 0;
+}
+
+.prfl-nmtxt {
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+.prfl-row {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  color: #464646;
+}
+.tgl-cntnt {
+  border-bottom: solid 2px gray;
+  width: 100%;
+  height: 25px;
+  position: relative;
+  margin-top: 10px;
+}
+.tgl-itm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0px 5px;
+  color: gray;
+  border-bottom: solid 2px gray;
+  cursor: pointer;
+  margin-right: 10px;
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+.tgl-itmo {
+  border-bottom: solid 2px #35a7d4;
+  color: #35a7d4;
+}
+.dtld-cntnt {
+  width: 80%;
+}
+.dtl-tbl {
+  width: 100%;
+  font-family: sans-serif;
+}
+.dtl-tbl tr td:nth-child(1) {
+  width: 200px;
+  padding: 8px 0px;
+  font-weight: bold;
+}
+.dtl-tbl tr td:nth-child(2) {
+  width: calc(100% - 200px);
+  padding: 8px 0px;
+  display: flex;
+  justify-content: center;
+}
+.updt-inpt{
+  height: 40px;
+  width: 90%;
+  max-width: 400px;
+  min-width: 200px;
+  padding: 5px;
+  font-size: 18px;
+  font-family: sans-serif;
+}
+.pass-div{
+  height: 40px;
+  width: 90%;
+  max-width: 400px;
+  min-width: 200px;
+  border: solid 1px black;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.pass-div input{
+  width: calc( 100% - 38px);
+  height: calc(100% - 2px);
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+.pass-tgl{
+  height: 40px;
+  width: 38px;
+  background-color: #3e3c3c;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sbmt-btn{
+  height: 30px;
+  width: 90px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 17px;
+  color: white;
+  background-color: lightgreen;
+  border: none;
+}
+.vrfd{
+  color: lightgreen;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 7px;
+}
+.vrfy-btn{
+  padding: 5px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  background-color: #ff5b5b;
+}
+@media (max-width: 550px) {
+  .usr-prfl {
+    width: 95%;
+  }
+  .dtld-cntnt {
+    width: 95%;
+  }
+}
+@media (max-width: 432px) {
+  .usr-prfl {
+    justify-content: center;
+  }
+  .dtl-tbl tr {
+    display: flex;
+    flex-direction: column;
+  }
+  .dtl-tbl tr td:nth-child(2) {
+    width: 100%;
+  }
+  .prfl-row {
+    justify-content: center;
+  }
+}

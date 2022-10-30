@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.blu-txt {
+  text-decoration: none;
+  color: rgb(53, 167, 212);
+  cursor: pointer;
+}
+.partner-log {
+  height: calc(100vh - 60px);
+  width: 100vw;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.log-container {
+  width: 300px;
+  max-width: 95%;
+  margin: 2.5%;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+.log-top {
+  text-align: center;
+  font-size: 70px;
+  color: #292930;
+}
+.log-hd {
+  height: 40px;
+  text-align: center;
+  border-bottom: solid 1px rgb(209, 209, 209);
+  margin-bottom: 20px;
+}
+.log-hdtxt {
+  font-size: 28px;
+  font-family: sans-serif;
+}
+.log-input {
+  height: 26px;
+  width: 220px;
+  border: none;
+  outline: none;
+  border-bottom: solid 1px rgb(168, 168, 168);
+  padding-left: 5px;
+  font-size: 15px;
+}
+.form-row {
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.log-btn {
+  padding: 5px;
+  font-size: 16px;
+  color: white;
+  background-color: #292930;
+  border: none;
+  width: 246px;
+}
+.irt {
+  height: 26px;
+  width: 26px;
+  color: white;
+  background-color: #292930;
+  font-size: 18px;
+  padding: 4px;
+}
+
+.log-btm {
+  height: 40px;
+  padding: 11px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between ;
+}

@@ -1,0 +1,26 @@
+
+.term_sec{
+    min-height: calc(100vh - 85px);
+    font-family: sans-serif;
+    display: flex;
+    padding: 10px 5%;
+}
+.term_sec div{
+    max-width: 1260px;
+    margin: 0px auto;
+}
+.term_sec h5{
+    font-size: 18px;
+    margin: 10px 0px;
+}
+.term_sec p{
+    font-size: 16px;
+    color: #3b3535;
+    margin-bottom: 20px;
+}
+.term_sec li{
+    margin: 10px 0px;
+    font-size: 16px;
+    color: #3b3535;
+    margin-bottom: 20px;
+}

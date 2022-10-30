@@ -1,0 +1,136 @@
+.registration-body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.registration-body::before {
+  content: "";
+  height: 120%;
+  width: 100%;
+  position: fixed;
+  background-color: rgb(85, 84, 84);
+  opacity: 0.5;
+  z-index: -1;
+  top: 0px;
+}
+.registration-container-external {
+  min-height: 320px;
+  width: 280px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
+}
+.registration-container-internal {
+  min-height: 280px;
+  width: 270px;
+}
+.form-registration {
+  height: calc( 100% - 40px );
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.input-field-2 {
+  width: 40%;
+  height: 25px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+.input-field {
+  width: 80%;
+  height: 25px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+.input-container {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.term-condition {
+  margin: 10px;
+}
+.form-link {
+  text-decoration: none;
+  display: inline-block;
+  height: auto;
+  width: auto;
+}
+.form-link-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+}
+.form-heading {
+  font-family: cursive;
+}
+.error {
+  color: red;
+  font-size: 10px;
+}
+/* change */
+.action-btn {
+  background-color: #ffe822;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.5em 1.25em;
+  color: white;
+  border-radius: 0.15em;
+  transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+  display: block;
+}
+
+.action-btn::after {
+  content: "";
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
+  position: absolute;
+  left: calc(50% - 0.75em);
+  top: calc(50% - 0.75em);
+  border: 0.15em solid transparent;
+  border-right-color: white;
+  border-radius: 50%;
+  animation: button-anim 0.7s linear infinite;
+  opacity: 0;
+}
+
+@keyframes button-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.action-btn.loading {
+  color: transparent;
+}
+
+.action-btn.loading::after {
+  opacity: 1;
+}
+.input-err {
+  font-size: 13px;
+  width: 80%;
+  color: #ff6600;
+}

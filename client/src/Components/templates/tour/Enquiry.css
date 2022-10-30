@@ -1,0 +1,54 @@
+.enqu-bx{
+    height: 468px;
+    max-height: 90%;
+    width: 400px;
+    max-width: 90%;
+    background-color: white;
+    z-index: 14;
+    font-family: sans-serif;
+}
+.enqu-hd{
+    height: 40px;
+    width: 100%;
+    background-color: #373737;
+    color: white;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.enqu-row{
+    height: 60px;
+    padding-left: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.enqu-row .react-datepicker-wrapper{
+    width: 90%;
+}
+
+.enqu-inpt{
+    height: 35px;
+    width: 90%;
+    outline: none;
+    border: solid 1px grey;
+    border-radius: 5px;
+    padding: 5px;
+}
+.enqu-rowhd{
+    width: 90%;
+}
+.enqu-btn{
+    width: 90%;
+    background-color: #373737;
+    color: white;
+    height: 35px;
+    border: none;
+}
+.enqu-row .react-datepicker-wrapper input{
+    width: 100%;
+}

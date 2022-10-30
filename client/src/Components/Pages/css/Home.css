@@ -1,0 +1,255 @@
+/* heading and para css */
+*{
+  font-family: sans-serif !important;
+}
+.top-banner-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  max-width: 1360px;
+  margin: auto;
+}
+.h-t1 {
+  font-size: 40px;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  font-family: "Arvo", serif;
+}
+.h-t2 {
+  font-size: 32px;
+  font-weight: 800;
+  display: block;
+  text-align: center;
+  font-family: "Arvo", serif;
+}
+.h-t3 {
+  font-size: 25px;
+  display: block;
+  text-align: center;
+  font-family: "Arvo", serif;
+}
+.h-t3l {
+  font-size: 25px;
+  display: block;
+  font-weight: 800;
+  font-family: "Arvo", serif;
+}
+.h-t4 {
+  font-size: 20px;
+  display: block;
+  text-align: center;
+  font-family: "Arvo", serif;
+  cursor: pointer;
+}
+
+.content {
+  font-size: 15px;
+  font-family: "Arvo", serif;
+}
+.content-t1 {
+  font-size: 18px;
+  font-family: "Arvo", serif;
+}
+
+/*  banner css */
+.top_banner {
+  height: 580px;
+  display: flex;
+}
+.ch-con{
+  max-width: 1360px;
+  display: flex;
+  padding: 10px 15px;
+  justify-content: space-around;
+}
+.ch-crd{
+  width: 32%;
+  max-width: 350px;
+  display: flex;
+}
+.ch-icn{
+  width: 30%;
+  font-size: 50px;
+  text-align: center;
+  padding-top: 20px;
+}
+.ch-txt{
+  width: 70%;
+  height: fit-content;
+}
+.top_banner::before {
+  content: "";
+  background: url(../../images/Home/BestDeals.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  height: 580px;
+  width: 100vw;
+  top: 86px;
+  left: 0px;
+  z-index: -10;
+}
+
+/* partner css */
+.partner-container {
+  padding: 15px;
+  min-height: 120px;
+  width: 100%;
+  display: flex;
+  background: #f1f1f173;
+}
+.partner-aside {
+  width: 20%;
+  height: 100%;
+  display: flex;
+}
+.partner-middle {
+  width: 58%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #77a1d3 0%,
+    #79cbca 51%,
+    #77a1d3 100%
+  );
+}
+.btn-grad {
+  margin: auto;
+  padding: 7px;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+.partner-head {
+  font-size: 25px;
+  color: #ffe822;
+  font-weight: 700;
+}
+.partner-card {
+  margin: auto;
+  min-height: 100px;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  max-width: 1000px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+#partnerimg {
+  margin: auto;
+  height: 100px;
+  width: 100px;
+}
+/* tour section */
+.tr-con{
+  margin: 20px auto;
+  max-width: 1360px;
+  width: 100%;
+}
+.tr-hdcon{
+  margin: 10px 0px;
+  text-align: center;
+  font-size: 35px;
+  font-family: cursive !important;
+}
+/* content css */
+.fl-con{
+  min-height: 100vh;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.see-more {
+  background: skyblue;
+  border: none;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: white;
+}
+.load-btn{
+  position: relative;
+  display: flex;
+}
+.load-btn span{
+  visibility: hidden;
+}
+.load-btn::after{
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: solid 2px transparent;
+  border-top-color: white;
+  margin: auto;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  animation: load 0.7s linear infinite;
+}
+@keyframes load {
+  0% { transform: rotate(0deg);}
+  25%{ transform: rotate(90deg);}
+  50%{ transform: rotate(180deg);}
+  100%{ transform: rotate(360deg);}
+}
+@media (max-width: 760px){
+  .ch-con{
+    flex-direction: column;
+  }
+  .ch-crd{
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+  }
+}
+@media (max-width: 651px) {
+  .why_card {
+    min-width: auto;
+    width: auto;
+  }
+  .top_banner_conatiner::before {
+    content: "";
+    background: none;
+  }
+  .banner_heading_container {
+    display: none;
+  }
+  .partner-card {
+    width: 80%;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+  }
+  .partner-aside {
+    width: 100%;
+  }
+  .partner-middle {
+    width: 100%;
+  }
+}

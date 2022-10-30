@@ -1,0 +1,66 @@
+.drvr-con {
+  min-height: 99%;
+  width: 98%;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.multicon-hd {
+  min-height: 50px;
+  padding: 0px 5px;
+  width: 100%;
+  background-color: #0d0c3a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 60px;
+  z-index: 98;
+}
+.h-t1 {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  margin-left: 60px;
+}
+@media (max-width: 650px) {
+  .h-t1 {
+    margin-left: 15px;
+  }
+}
+.ad-drvr {
+  height: 30px;
+  width: 80px;
+  border: none;
+  color: white;
+  background-color: #3eaaff;
+}
+.tabel-con {
+  overflow: auto;
+  padding: 10px 5px;
+  max-height: 50vh;
+}
+.rcrd-err {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+}
+.hstry-tbl,
+.hstry-tbl thead,
+.hstry-tbl tbody,
+.hstry-tbl tr {
+  width: 100%;
+  min-width: 580px;
+  border-collapse: collapse;
+}
+.hstry-tbl td,
+.hstry-tbl th {
+  border: solid 1px grey;
+  padding: 5px 2px;
+  text-align: center;
+}
+.hstry-tbl th {
+  background-color: #0d0c3a;
+  color: white;
+}
