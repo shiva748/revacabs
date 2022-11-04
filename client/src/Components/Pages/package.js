@@ -315,9 +315,7 @@ const Tourpackage = () => {
             </div>
             <div className="trcrd-con">
               {packages.length === 0 ? (
-                <div>
-                  <h1>No Package found</h1>
-                </div>
+                <div className="nrc-con"><img src="/icons/nrec.png" alt=""/><p className="nrc-txt">No Tour package found</p></div>
               ) : (
                 packages.map((itm) => {
                   return (

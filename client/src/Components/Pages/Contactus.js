@@ -36,7 +36,7 @@ const Contact = () => {
       <section className="contact">
         <section className="map-container">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11568.255665509145!2d77.67136410518458!3d27.467981045039355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x591f5b0348b89b3e!2sMathura%20cab!5e0!3m2!1sen!2sin!4v1633023214243!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d884.9641725596742!2d77.67616882919195!3d27.473720598930583!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39737135f92c0297%3A0x2e8a0e02bcc964d7!2sRajaram%20Patti%2C%20Natwar%20Nagar%2C%20Dholi%20Pyau%2C%20Mathura%2C%20Uttar%20Pradesh%20281001!5e0!3m2!1sen!2sin!4v1667582684219!5m2!1sen!2sin"
             className="map-frame"
             frameBorder="0"
             style={{ border: 0 }}
@@ -44,7 +44,7 @@ const Contact = () => {
             allowFullScreen=""
             aria-hidden="false"
             tabIndex="0"
-          />
+          ></iframe>
         </section>
         <div className="flx-con">
           <div className="con-hd">Contact Us</div>
@@ -57,8 +57,11 @@ const Contact = () => {
                 <span className="hd-txt">Address :</span>
               </div>
               <div className="adr-txt">
-                <a href="https://g.page/mathura-cab?share" className="blu-lnk">
-                  Natwar Nagar, Hanuman Nagar, Mathura, Uttar Pradesh 281001
+                <a
+                  href="https://goo.gl/maps/SEnQHEP6heRbxrj97"
+                  className="blu-lnk"
+                >
+                  Natwar Nagar, Dholi Pyau, Mathura, Uttar Pradesh 281001
                 </a>
               </div>
             </div>
@@ -70,12 +73,8 @@ const Contact = () => {
                 <span className="hd-txt">Tel :</span>
               </div>
               <div className="adr-txt">
-                <a href="tel:+919997548384" className="blu-lnk">
-                  9997548384
-                </a>
-                ,{" "}
-                <a href="tel:+917351474736" className="blu-lnk">
-                  7351474736
+                <a href="tel:+919456878882" className="blu-lnk">
+                  9456878882
                 </a>
               </div>
             </div>
@@ -88,10 +87,10 @@ const Contact = () => {
               </div>
               <div className="adr-txt">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=9997548384&text=Hi+RevaCabs%2C+Whatsup&type=phone_number&app_absent=0"
+                  href="https://api.whatsapp.com/send/?phone=9456878882&text=Hi+RevaCabs%2C+Whatsup&type=phone_number&app_absent=0"
                   className="blu-lnk"
                 >
-                  9997548384
+                  9456878882
                 </a>
               </div>
             </div>
@@ -103,7 +102,6 @@ const Contact = () => {
                 <span className="hd-txt">Email :</span>
               </div>
               <div className="adr-txt">
-                <a href="mailto:info@revacabs.com"></a>
                 <a href="mailto:info@revacabs.com" className="blu-lnk">
                   info@revacabs.com
                 </a>

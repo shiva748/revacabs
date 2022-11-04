@@ -31,7 +31,7 @@ const Footer = () => {
                 <span className="rptn-hdtxt">Other</span>
               </div>
               <a
-                href="http://localhost:3000/"
+                href="https://partners.revacabs.com/"
                 target="_blank"
                 className="ftr-link"
                 rel="noreferrer"
@@ -53,14 +53,14 @@ const Footer = () => {
             <div className="rptn-hd">
               <span className="rptn-hdtxt">Get in touch</span>
             </div>
-            <a href="/" className="ftr-link">
-              <FaLocationArrow /> 152, Hanuman Nagar, Dholi Pyau Mathura
+            <a href="https://goo.gl/maps/SEnQHEP6heRbxrj97" target="_blank" className="ftr-link">
+              <FaLocationArrow />Natwar Nagar, Dholi Pyau, Mathura, Uttar Pradesh 281001
             </a>
-            <a href="tel:+91 9997548384" className="ftr-link">
-              <FaPhoneAlt /> 9997548384
+            <a href="tel:+91 9456878882" className="ftr-link">
+              <FaPhoneAlt /> 9456878882
             </a>
-            <a href="mailto:Shivagautam2002@gmail.com" className="ftr-link">
-              <HiMail /> Shivagautam2002@gmail.com
+            <a href="mailto:info@revacabs.com" className="ftr-link">
+              <HiMail /> info@revacabs.com
             </a>
             <div className="slinks-con">
               <a href="/" className="s-btn">
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="btm-row">
-          <p>© Copyright sarthi.</p>
+          <p>© Copyright Revacabs.</p>
         </div>
       </footer>
     </>

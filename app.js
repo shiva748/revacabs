@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const PORT = process.env.PORT || 433;
+const PORT = process.env.PORT || 443;
 const app = express();
 const cors = require("cors");
 var bodyParser = require("body-parser");
@@ -57,11 +57,11 @@ app.use("/api/public", publicr);
 app.use("/payment", paymentr);
 app.use("/oceannodes", admnr);
 app.use("/driver", driverr);
-admin.use(express.static("admin/build"));
+/*admin.use(express.static("admin/build"));
 admin.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "admin", "build", "index.html"));
 });
-/*app.use(vhost("pa98oceanodes.revacabs.com", admin));
+app.use(vhost("pa98oceanodes.revacabs.com", admin));
 partner.use(express.static("partner/build"));
 partner.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "partner", "build", "index.html"));

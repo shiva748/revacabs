@@ -2,7 +2,7 @@ const blocker = async (req, res, next) => {
   try {
     const data = req.body;
     const ip = ["::1", "::ffff:192.168.1.3", "::ffff:127.0.0.1"];
-
+    // console.log(req.connection.remoteAddress)
     if (!ip.some((itm) => itm === req.connection.remoteAddress)) {
       console.log(req.connection.remoteAddress);
       return res

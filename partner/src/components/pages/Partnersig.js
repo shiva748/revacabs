@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   FaCaretRight,
   FaPhoneAlt,
-  FaWhatsappSquare,
   FaTimesCircle,
   FaTimes,
 } from "react-icons/fa";
@@ -417,6 +416,9 @@ const Partnersig = () => {
                 ""
               )}
             </div>
+            <div style={{margin:"10px 0px"}}>
+              By clicking Sing Up, you agree to our <NavLink to="/terms-conditions" className="blu-txt"> Term & Conditions</NavLink> of use.
+            </div>
             <div>
               <button
                 type="submit"
@@ -433,7 +435,7 @@ const Partnersig = () => {
           <div className="stp-con">
             <div className="stp-row">
               <FaCaretRight />
-              <span>Fill the registration form and note down the Code</span>
+              <span>Fill the registration form.</span>
             </div>
             <div className="stp-row">
               <FaCaretRight />
@@ -441,8 +443,12 @@ const Partnersig = () => {
             </div>
             <div className="stp-row">
               <FaCaretRight />
+              <span>Once your login has been approved.</span>
+            </div>
+            <div className="stp-row">
+              <FaCaretRight />
               <span>
-                The executive will ask for code and give you instruction's about
+                The executive will give you instruction's about
                 the verification process
               </span>
             </div>
@@ -460,22 +466,13 @@ const Partnersig = () => {
           </div>
           <p className="apltn-hd">Any Question? Contact Our team at</p>
           <div className="stp-row">
-            <a href="mailto:Shivagautam2002@gmail.com" className="blu-txt">
-              <MdEmail /> Shivagautam2002@gmail.com
+            <a href="mailto:info@revacabs.com" className="blu-txt">
+              <MdEmail /> info@revacabs.com
             </a>
           </div>
           <div className="stp-row">
-            <a href="tel:+919997548384" className="blu-txt">
-              <FaPhoneAlt /> 9997548384
-            </a>
-          </div>
-          <div className="stp-row">
-            <a
-              href=" https://wa.me/917599928115"
-              className="blu-txt"
-              target="_blank"
-            >
-              <FaWhatsappSquare style={{ color: "#34B7F1" }} /> 7599928115
+            <a href="tel:+919456878882" className="blu-txt">
+              <FaPhoneAlt /> 9456878882
             </a>
           </div>
         </div>

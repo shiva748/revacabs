@@ -109,7 +109,7 @@
   }
   .nrc-con img {
     max-width: 150px;
-    border-radius: 50%;
+    border-radius: 25%;
     background-color: rgb(250, 250, 250);
   }
   .nrc-txt {
@@ -119,6 +119,7 @@
   .trcrd-con{
     display: flex;
     flex-wrap: wrap;
+    min-height: calc(100vh - 146px);
   }
   .marg{
     margin: 10px calc((100% - 1080px)/6) !important;

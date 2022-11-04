@@ -564,7 +564,7 @@ const Navbar = () => {
           </div>
           <div className="top_link_itm">
             <a
-              href="https://api.whatsapp.com/send/?phone=9997548384&text=Hi+RevaCabs%2C+Whatsup&type=phone_number&app_absent=0"
+              href="https://api.whatsapp.com/send/?phone=9456878882&text=Hi+RevaCabs%2C+Whatsup&type=phone_number&app_absent=0"
               target="_blank"
               className="top_link_whatsapp"
             >
