@@ -2372,7 +2372,7 @@ exports.admn_addcity = async (req, res) => {
     "Uttarakhand",
     "Uttar Pradesh",
     "West Bengal",
-    "India",
+    "Delhi",
   ];
   let { city, state, longlat } = req.body;
   if (

@@ -27,5 +27,5 @@ exports.states = [
   "Uttarakhand",
   "Uttar Pradesh",
   "West Bengal",
-  "India",
+  "Delhi",
 ];
