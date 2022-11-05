@@ -10,6 +10,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import { FcApproval } from "react-icons/fc";
 import Footer from "../templates/footer/Footer";
 import "./css/Contactus.css";
+import {Helmet} from "react-helmet";
 const Contact = () => {
   const [alert, setalert] = useState({
     display: false,
@@ -33,6 +34,16 @@ const Contact = () => {
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Contact Revacabs</title>
+        <meta
+          name="description"
+          content="If you are facing any issue/ or for feedback, write to us at info@revacabs.com or Pick up the phone and call us 24*7: 9456878882 "
+        />
+         <meta name="keywords" content={"Reva Cabs, Reva Cabs Contact, Contact"}/>
+        <link rel="canonical" href="http://revacabs.com/" />
+      </Helmet>
       <section className="contact">
         <section className="map-container">
           <iframe

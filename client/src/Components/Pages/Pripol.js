@@ -1,8 +1,20 @@
 import React from "react";
 import "./css/term.css";
+import { Helmet } from "react-helmet";
 
 const Pripol = () => {
   return (
+    <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Privacy Policy - Revacabs</title>
+        <meta
+          name="description"
+          content="These are the following Privacy Policy that any individual should consider before Before submitting any details to us"
+        />
+         <meta name="keywords" content={"Reva Cabs, Reva Privacy Policy, Privacy Policy"}/>
+        <link rel="canonical" href="http://revacabs.com/" />
+      </Helmet>
     <section className="term_sec">
       <div>
         <h5>Privacy Policy for Reva Cabs</h5>
@@ -99,6 +111,7 @@ const Pripol = () => {
         </p>
       </div>
     </section>
+    </>
   );
 };
 

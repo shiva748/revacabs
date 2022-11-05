@@ -28,20 +28,31 @@ const Cancelled = () => {
   };
   const [filter, setfilter] = useState(df);
 
-  const defaultsu = [
-    {
-      cityname: "Mathura, Uttar Pradesh",
-      citycode: "8574",
-    },
-  ];
+  const [def, setdef] = useState([]);
+  const [dis, setdis] = useState({from:false, to:false});
   const [autoco, setautoco] = useState({
-    from: { display: false, sugge: defaultsu },
-    to: { display: false, sugge: defaultsu },
+    from: [],
+    to: [],
   });
-
+  const firstload = async () => {
+    const res = await fetch("/api/public/autocomplete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ frst: true }),
+    });
+    const data = await res.json();
+    setautoco({
+      from: data,
+      to: data,
+    });
+    setdef(data)
+  };
   const autocomplete = async (e) => {
     if (e.target.value.length <= 0) {
-      setautoco({ ...autoco, sugge: defaultsu });
+      setautoco({
+        from: def,
+        to: def,
+      });
       return;
     }
     if (typeof e.target.value !== "string") {
@@ -55,15 +66,15 @@ const Cancelled = () => {
     const data = await res.json();
     if (e.target.name === "from") {
       if (res.status !== 200) {
-        return setautoco({ ...autoco, from: { ...autoco.from, sugge: [] } });
+        return setautoco({ ...autoco, from: [] });
       } else {
-        return setautoco({ ...autoco, from: { ...autoco.from, sugge: data } });
+        return setautoco({ ...autoco, from: data });
       }
     } else if (e.target.name === "to") {
       if (res.status !== 200) {
-        return setautoco({ ...autoco, to: { ...autoco.to, sugge: [] } });
+        return setautoco({ ...autoco, to: [] });
       } else {
-        return setautoco({ ...autoco, to: { ...autoco.to, sugge: data } });
+        return setautoco({ ...autoco, to: data });
       }
     }
   };
@@ -107,7 +118,7 @@ const Cancelled = () => {
         return;
       }
       if (
-        !autoco.from.sugge.some(
+        !autoco.from.some(
           (itm) => itm.citycode === fromcode && itm.cityname === from
         )
       ) {
@@ -125,7 +136,7 @@ const Cancelled = () => {
         return;
       }
       if (
-        !autoco.to.sugge.some(
+        !autoco.to.some(
           (itm) => itm.citycode === tocode && itm.cityname === to
         )
       ) {
@@ -168,6 +179,7 @@ const Cancelled = () => {
   };
   useEffect(() => {
     bknglstr();
+    firstload()
     // eslint-disable-next-line
   }, []);
 
@@ -225,6 +237,24 @@ const Cancelled = () => {
       }
     }
   };
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (
+        e.path[0].tagName !== "INPUT" &&
+        !["from", "to"].some((itm) => itm === e.path[0].id)
+      ) {
+        setdis({from:false, to:false})
+      } else if (
+        e.path[0].id === "from"
+      ) {
+        setdis({from:true, to:false})
+      } else if (e.path[0].id === "to") {
+        setdis({from:false, to:true})
+      }
+    };
+    document.body.addEventListener("click", closeDropdown);
+    return () => document.body.removeEventListener("click", closeDropdown);
+  }, []);
   return (
     <>
       <Helmet>
@@ -264,6 +294,7 @@ const Cancelled = () => {
                     <input
                       type="text"
                       name="from"
+                      id="from"
                       className="fltr-input"
                       placeholder="From"
                       value={filter.from}
@@ -271,28 +302,13 @@ const Cancelled = () => {
                         setfilter({ ...filter, from: e.target.value });
                       }}
                       autoComplete="off"
-                      onFocus={() => {
-                        // eslint-disable-next-line
-                        setautoco({
-                          ...autoco,
-                          from: { ...autoco.from, display: true },
-                        });
-                      }}
-                      onBlur={() => {
-                        setTimeout(() => {
-                          // eslint-disable-next-line
-                          setautoco({
-                            ...autoco,
-                            from: { ...autoco.from, display: false },
-                          });
-                        }, 200);
-                      }}
+                      
                       onKeyUp={autocomplete}
                     />
-                    {autoco.from.display ? (
+                    {dis.from ? (
                       <div className="auto-con">
                         <div className="auto-wrapper">
-                          {autoco.from.sugge.map((itm, i) => {
+                          {autoco.from.map((itm, i) => {
                             return (
                               <div
                                 key={i}
@@ -303,10 +319,7 @@ const Cancelled = () => {
                                     from: itm.cityname,
                                     fromcode: itm.citycode,
                                   });
-                                  setautoco({
-                                    ...autoco,
-                                    from: { ...autoco.from, display: false },
-                                  });
+                                  
                                 }}
                               >
                                 <div className="location-icon">
@@ -323,7 +336,7 @@ const Cancelled = () => {
                               </div>
                             );
                           })}
-                          {autoco.from.sugge.length <= 0 ? "No city Found" : ""}
+                          {autoco.from.length <= 0 ? "No city Found" : ""}
                         </div>
                       </div>
                     ) : (
@@ -355,6 +368,7 @@ const Cancelled = () => {
                       <input
                         type="text"
                         name="to"
+                        id="to"
                         className="fltr-input"
                         placeholder="to"
                         value={filter.to}
@@ -362,28 +376,13 @@ const Cancelled = () => {
                           setfilter({ ...filter, to: e.target.value });
                         }}
                         autoComplete="off"
-                        onFocus={() => {
-                          // eslint-disable-next-line
-                          setautoco({
-                            ...autoco,
-                            to: { ...autoco.to, display: true },
-                          });
-                        }}
-                        onBlur={() => {
-                          setTimeout(() => {
-                            // eslint-disable-next-line
-                            setautoco({
-                              ...autoco,
-                              to: { ...autoco.to, display: false },
-                            });
-                          }, 200);
-                        }}
+                        
                         onKeyUp={autocomplete}
                       />
-                      {autoco.to.display ? (
+                      {dis.to ? (
                         <div className="auto-con">
                           <div className="auto-wrapper">
-                            {autoco.to.sugge.map((itm, i) => {
+                            {autoco.to.map((itm, i) => {
                               return (
                                 <div
                                   key={i}
@@ -394,11 +393,7 @@ const Cancelled = () => {
                                       to: itm.cityname,
                                       tocode: itm.citycode,
                                     });
-                                    // eslint-disable-next-line
-                                    setautoco({
-                                      ...autoco,
-                                      to: { ...autoco.to, display: false },
-                                    });
+
                                   }}
                                 >
                                   <div className="location-icon">
@@ -415,7 +410,7 @@ const Cancelled = () => {
                                 </div>
                               );
                             })}
-                            {autoco.to.sugge.length <= 0 ? "No city Found" : ""}
+                            {autoco.to.length <= 0 ? "No city Found" : ""}
                           </div>
                         </div>
                       ) : (

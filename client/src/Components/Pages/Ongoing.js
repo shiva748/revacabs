@@ -32,20 +32,31 @@ const Ongoing = () => {
   };
   const [filter, setfilter] = useState(df);
 
-  const defaultsu = [
-    {
-      cityname: "Mathura, Uttar Pradesh",
-      citycode: "8574",
-    },
-  ];
+  const [def, setdef] = useState([]);
+  const [dis, setdis] = useState({from:false, to:false});
   const [autoco, setautoco] = useState({
-    from: { display: false, sugge: defaultsu },
-    to: { display: false, sugge: defaultsu },
+    from: [],
+    to: [],
   });
-
+  const firstload = async () => {
+    const res = await fetch("/api/public/autocomplete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ frst: true }),
+    });
+    const data = await res.json();
+    setautoco({
+      from: data,
+      to: data,
+    });
+    setdef(data)
+  };
   const autocomplete = async (e) => {
     if (e.target.value.length <= 0) {
-      setautoco({ ...autoco, sugge: defaultsu });
+      setautoco({
+        from: def,
+        to: def,
+      });
       return;
     }
     if (typeof e.target.value !== "string") {
@@ -59,15 +70,15 @@ const Ongoing = () => {
     const data = await res.json();
     if (e.target.name === "from") {
       if (res.status !== 200) {
-        return setautoco({ ...autoco, from: { ...autoco.from, sugge: [] } });
+        return setautoco({ ...autoco, from: []});
       } else {
-        return setautoco({ ...autoco, from: { ...autoco.from, sugge: data } });
+        return setautoco({ ...autoco, from: data });
       }
     } else if (e.target.name === "to") {
       if (res.status !== 200) {
-        return setautoco({ ...autoco, to: { ...autoco.to, sugge: [] } });
+        return setautoco({ ...autoco, to: [] });
       } else {
-        return setautoco({ ...autoco, to: { ...autoco.to, sugge: data } });
+        return setautoco({ ...autoco, to: data });
       }
     }
   };
@@ -111,7 +122,7 @@ const Ongoing = () => {
         return;
       }
       if (
-        !autoco.from.sugge.some(
+        !autoco.from.some(
           (itm) => itm.citycode === fromcode && itm.cityname === from
         )
       ) {
@@ -129,7 +140,7 @@ const Ongoing = () => {
         return;
       }
       if (
-        !autoco.to.sugge.some(
+        !autoco.to.some(
           (itm) => itm.citycode === tocode && itm.cityname === to
         )
       ) {
@@ -172,12 +183,13 @@ const Ongoing = () => {
   };
   useEffect(() => {
     bknglstr();
+    firstload();
     // eslint-disable-next-line
   }, []);
   const cancelbooking = async (e) => {
     e.preventDefault();
     const { data, feedback, reason } = cncl;
-    setcncl({...cncl, load:true})
+    setcncl({ ...cncl, load: true });
     const res = await fetch("/api/cancelbooking", {
       method: "PUT",
       headers: {
@@ -197,7 +209,7 @@ const Ongoing = () => {
         type: "green",
       });
     } else {
-      setcncl({...cncl, load:false})
+      setcncl({ ...cncl, load: false });
       setalertd({
         display: true,
         title: "",
@@ -210,7 +222,7 @@ const Ongoing = () => {
   const dcl = {
     shw: false,
     freecncl: false,
-    load:false,
+    load: false,
   };
   const [cncl, setcncl] = useState(dcl);
   const handelinput = (e) => {
@@ -218,7 +230,7 @@ const Ongoing = () => {
     value = e.target.value;
     setcncl({ ...cncl, [name]: value });
   };
-  const dres = { shw: false, date: "", time: "", data: {}, load:false};
+  const dres = { shw: false, date: "", time: "", data: {}, load: false };
   const [timear, settimear] = useState([]);
   const [resc, setresc] = useState(dres);
   const gentime = (selected) => {
@@ -276,7 +288,7 @@ const Ongoing = () => {
         minutes = 15;
       }
     }
-    settimear(timearray)
+    settimear(timearray);
   };
   // === === === intator === === === //
 
@@ -359,14 +371,18 @@ const Ongoing = () => {
   const Reschedule = async (e) => {
     e.preventDefault();
     const { date, time, data } = resc;
-    setresc({...resc, load:true})
+    setresc({ ...resc, load: true });
     const res = await fetch("/api/booking/resheduled", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ bookingid: data.bookingid, date: date.toString(), time:time.toString() }),
+      body: JSON.stringify({
+        bookingid: data.bookingid,
+        date: date.toString(),
+        time: time.toString(),
+      }),
     });
     const result = await res.json();
     if (res.status === 201) {
@@ -379,7 +395,7 @@ const Ongoing = () => {
         type: "green",
       });
     } else {
-      setresc({...resc, load:false})
+      setresc({ ...resc, load: false });
       setalertd({
         display: true,
         title: "",
@@ -388,6 +404,24 @@ const Ongoing = () => {
       });
     }
   };
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (
+        e.path[0].tagName !== "INPUT" &&
+        !["from", "to"].some((itm) => itm === e.path[0].id)
+      ) {
+        setdis({from:false, to:false})
+      } else if (
+        e.path[0].id === "from"
+      ) {
+        setdis({from:true, to:false})
+      } else if (e.path[0].id === "to") {
+        setdis({from:false, to:true})
+      }
+    };
+    document.body.addEventListener("click", closeDropdown);
+    return () => document.body.removeEventListener("click", closeDropdown);
+  }, []);
   return (
     <>
       <Helmet>
@@ -427,6 +461,7 @@ const Ongoing = () => {
                     <input
                       type="text"
                       name="from"
+                      id="from"
                       className="fltr-input"
                       placeholder="From"
                       value={filter.from}
@@ -434,28 +469,13 @@ const Ongoing = () => {
                         setfilter({ ...filter, from: e.target.value });
                       }}
                       autoComplete="off"
-                      onFocus={() => {
-                        // eslint-disable-next-line
-                        setautoco({
-                          ...autoco,
-                          from: { ...autoco.from, display: true },
-                        });
-                      }}
-                      onBlur={() => {
-                        setTimeout(() => {
-                          // eslint-disable-next-line
-                          setautoco({
-                            ...autoco,
-                            from: { ...autoco.from, display: false },
-                          });
-                        }, 200);
-                      }}
+                      
                       onKeyUp={autocomplete}
                     />
-                    {autoco.from.display ? (
+                    {dis.from ? (
                       <div className="auto-con">
                         <div className="auto-wrapper">
-                          {autoco.from.sugge.map((itm, i) => {
+                          {autoco.from.map((itm, i) => {
                             return (
                               <div
                                 key={i}
@@ -465,10 +485,6 @@ const Ongoing = () => {
                                     ...filter,
                                     from: itm.cityname,
                                     fromcode: itm.citycode,
-                                  });
-                                  setautoco({
-                                    ...autoco,
-                                    from: { ...autoco.from, display: false },
                                   });
                                 }}
                               >
@@ -486,7 +502,7 @@ const Ongoing = () => {
                               </div>
                             );
                           })}
-                          {autoco.from.sugge.length <= 0 ? "No city Found" : ""}
+                          {autoco.from.length <= 0 ? "No city Found" : ""}
                         </div>
                       </div>
                     ) : (
@@ -518,6 +534,7 @@ const Ongoing = () => {
                       <input
                         type="text"
                         name="to"
+                        id="to"
                         className="fltr-input"
                         placeholder="to"
                         value={filter.to}
@@ -525,28 +542,12 @@ const Ongoing = () => {
                           setfilter({ ...filter, to: e.target.value });
                         }}
                         autoComplete="off"
-                        onFocus={() => {
-                          // eslint-disable-next-line
-                          setautoco({
-                            ...autoco,
-                            to: { ...autoco.to, display: true },
-                          });
-                        }}
-                        onBlur={() => {
-                          setTimeout(() => {
-                            // eslint-disable-next-line
-                            setautoco({
-                              ...autoco,
-                              to: { ...autoco.to, display: false },
-                            });
-                          }, 200);
-                        }}
                         onKeyUp={autocomplete}
                       />
-                      {autoco.to.display ? (
+                      {dis.to ? (
                         <div className="auto-con">
                           <div className="auto-wrapper">
-                            {autoco.to.sugge.map((itm, i) => {
+                            {autoco.to.map((itm, i) => {
                               return (
                                 <div
                                   key={i}
@@ -557,11 +558,7 @@ const Ongoing = () => {
                                       to: itm.cityname,
                                       tocode: itm.citycode,
                                     });
-                                    // eslint-disable-next-line
-                                    setautoco({
-                                      ...autoco,
-                                      to: { ...autoco.to, display: false },
-                                    });
+                                    
                                   }}
                                 >
                                   <div className="location-icon">
@@ -578,7 +575,7 @@ const Ongoing = () => {
                                 </div>
                               );
                             })}
-                            {autoco.to.sugge.length <= 0 ? "No city Found" : ""}
+                            {autoco.to.length <= 0 ? "No city Found" : ""}
                           </div>
                         </div>
                       ) : (
@@ -780,7 +777,7 @@ const Ongoing = () => {
                     setcncl(dcl);
                   }}
                 ></div>
-                <div className={cncl.load?"cncl-con ovrly-ad":"cncl-con"}>
+                <div className={cncl.load ? "cncl-con ovrly-ad" : "cncl-con"}>
                   <div className="cncl-hd">Cancel Booking</div>
                   <table className="bkngdtl-tbl">
                     <tbody>
@@ -930,7 +927,9 @@ const Ongoing = () => {
                   </table>
                   <div style={{ display: "flex" }}>
                     <button
-                      className={cncl.load?"gv-btn icn-btn load-btn":"gv-btn icn-btn"}
+                      className={
+                        cncl.load ? "gv-btn icn-btn load-btn" : "gv-btn icn-btn"
+                      }
                       style={{ backgroundColor: "lightgreen", margin: "auto" }}
                       onClick={cancelbooking}
                     >
@@ -952,7 +951,7 @@ const Ongoing = () => {
                     setresc(dres);
                   }}
                 ></div>
-                <div className={resc.load?"cncl-con ovrly-ad":"cncl-con"}>
+                <div className={resc.load ? "cncl-con ovrly-ad" : "cncl-con"}>
                   <div className="cncl-hd">Reschedule Booking</div>
                   <table className="bkngdtl-tbl">
                     <tbody>
@@ -1122,11 +1121,16 @@ const Ongoing = () => {
                             name="time"
                             className="rsc-inp"
                             id="pickupat"
-                            onClick={() => {gentime(
-                                resc.date ? new Date(resc.date) : new Date(resc.data.pickupat)
+                            onClick={() => {
+                              gentime(
+                                resc.date
+                                  ? new Date(resc.date)
+                                  : new Date(resc.data.pickupat)
                               );
                             }}
-                            onChange={(e)=>{setresc({...resc, time:e.target.value})}}
+                            onChange={(e) => {
+                              setresc({ ...resc, time: e.target.value });
+                            }}
                             value={resc.time}
                           >
                             <option value="">Select Time</option>

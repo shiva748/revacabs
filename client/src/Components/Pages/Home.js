@@ -135,7 +135,7 @@ const Home = () => {
           name="description"
           content="India's One of the Largest Intercity Car Rentals | Hire Outstation and Local AC cabs with Attractive Rates, Clean Cars, Courteous Drivers & Transparent Billing"
         />
-        <link rel="canonical" href="http://revacabs.com/" />
+        <link rel="canonical" href="https://revacabs.com/" />
       </Helmet>
       {loading ? (
         <Loading />
@@ -163,7 +163,7 @@ const Home = () => {
                 <div className="partner-aside">
                   <a
                     className="btn-grad"
-                    href="http://localhost:3000/"
+                    href="https://partners.revacabs.com/register"
                     target="_blank"
                     rel="noreferrer"
                   >

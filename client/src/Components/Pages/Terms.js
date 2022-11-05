@@ -1,8 +1,20 @@
 import React from "react";
 import "./css/term.css";
+import { Helmet } from "react-helmet";
 
 const Terms = () => {
   return (
+    <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Terms and Conditions - Revacabs</title>
+        <meta
+          name="description"
+          content="These are the following terms that any individual should consider before using our services"
+        />
+         <meta name="keywords" content={"Reva Cabs, Reva Cabs Terms, Terms & condition"}/>
+        <link rel="canonical" href="http://revacabs.com/" />
+      </Helmet>
     <section className="term_sec">
       <div>
         <h5>Introduction</h5>
@@ -120,6 +132,7 @@ const Terms = () => {
             <a
               href="https://www.mathuracab.com/"
               target="_blank"
+              rel="noreferrer"
               style={{ textDecoration: "none", color: "skyblue" }}
             >
               Mathura cab
@@ -129,6 +142,7 @@ const Terms = () => {
             <a
               href="https://www.mathuracab.com/"
               target="_blank"
+              rel="noreferrer"
               style={{ textDecoration: "none", color: "skyblue" }}
             >
               Mathura cab
@@ -179,6 +193,7 @@ const Terms = () => {
         </p>
       </div>
     </section>
+    </>
   );
 };
 

@@ -58,7 +58,7 @@ app.use("/payment", paymentr);
 app.use("/oceannodes", admnr);
 app.use("/driver", driverr);
 /*admin.use(express.static("admin/build"));
-admin.get("*", (req, res) => {
+admin.get("*", blocker, (req, res) => {
   res.sendFile(path.resolve(__dirname, "admin", "build", "index.html"));
 });
 app.use(vhost("pa98oceanodes.revacabs.com", admin));
@@ -66,7 +66,7 @@ partner.use(express.static("partner/build"));
 partner.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "partner", "build", "index.html"));
 });
-app.use(vhost("partner.revacabs.com", partner));
+app.use(vhost("partners.revacabs.com", partner));
 client.use(express.static("client/build"));
 client.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));

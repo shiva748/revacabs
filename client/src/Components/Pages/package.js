@@ -56,7 +56,7 @@ const Tourpackage = () => {
             title: "",
           });
         }
-        if (!autoco.sugge.some((e) => e.cityname === cts)) {
+        if (!autoco.some((e) => e.cityname === cts)) {
           return setalertd({
             display: true,
             title: "",
@@ -116,25 +116,33 @@ const Tourpackage = () => {
     setloading(false);
   };
 
+  
+
+  // === === === === changes === === === ===
+  const [def, setdef] = useState([]);
+
+  //search api
+  const [dis, setdis] = useState(false);
+  const [autoco, setautoco] = useState([]);
+  const firstload = async ()=>{
+    const res = await fetch("/api/public/autocomplete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ frst:true}),
+        });
+        const data = await res.json();
+        setautoco(data)
+        setdef(data)
+  }
   useEffect(() => {
     resizer();
     listpackage();
+    firstload()
     // eslint-disable-next-line
   }, []);
-
-  // === === === === changes === === === ===
-  const defaultsu = [
-    {
-      cityname: "Mathura, Uttar Pradesh",
-      citycode: "8574",
-    },
-  ];
-
-  //search api
-  const [autoco, setautoco] = useState({ display: false, sugge: [] });
   const autocomplete = async (e) => {
     if (e.target.value <= 0) {
-      setautoco({ ...autoco, sugge: defaultsu });
+      setautoco(def);
       return;
     }
     if (typeof e.target.value !== "string") {
@@ -147,12 +155,24 @@ const Tourpackage = () => {
     });
     const data = await res.json();
     if (res.status !== 200) {
-      return setautoco({ ...autoco, sugge: [] });
+      return setautoco([]);
     } else {
-      return setautoco({ ...autoco, sugge: data });
+      return setautoco(data);
     }
   };
   const [loading, setloading] = useState(true);
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (
+        e.path[0].tagName !== "INPUT" &&
+        !["tourcity"].some((itm) => itm === e.path[0].id)
+      ) {
+        setdis(false)
+      }
+    };
+    document.body.addEventListener("click", closeDropdown);
+    return () => document.body.removeEventListener("click", closeDropdown);
+  }, []);
   return (
     <>
       <Helmet>
@@ -193,6 +213,7 @@ const Tourpackage = () => {
                       <input
                         type="text"
                         name="City"
+                        id="tourcity"
                         className="fltr-input"
                         placeholder="City"
                         value={filter.cts}
@@ -202,20 +223,14 @@ const Tourpackage = () => {
                         autoComplete="off"
                         onFocus={() => {
                           // eslint-disable-next-line
-                          setautoco({ ...autoco, ["display"]: true });
-                        }}
-                        onBlur={() => {
-                          setTimeout(() => {
-                            // eslint-disable-next-line
-                            setautoco({ ...autoco, display: false });
-                          }, 200);
+                          setdis(true)
                         }}
                         onKeyUp={autocomplete}
                       />
-                      {autoco.display ? (
+                      {dis? (
                         <div className="auto-con">
                           <div className="auto-wrapper">
-                            {autoco.sugge.map((itm, i) => {
+                            {autoco.map((itm, i) => {
                               return (
                                 <div
                                   key={i}
@@ -224,11 +239,6 @@ const Tourpackage = () => {
                                     setfilter({
                                       ...filter,
                                       cts: itm.cityname,
-                                    });
-                                    // eslint-disable-next-line
-                                    setautoco({
-                                      ...autoco,
-                                      display: false,
                                     });
                                   }}
                                 >
@@ -246,7 +256,7 @@ const Tourpackage = () => {
                                 </div>
                               );
                             })}
-                            {autoco.sugge.length <= 0 ? "No city Found" : ""}
+                            {autoco.length <= 0 ? "No city Found" : ""}
                           </div>
                         </div>
                       ) : (
