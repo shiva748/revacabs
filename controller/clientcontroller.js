@@ -1823,11 +1823,11 @@ const Order = require("../models/orders");
 
 exports.updatebooking = async (req, res) => {
   let { bookingid, orderid, ad_amount, rzp_id } = req.body;
-  if (ad_amount == 0) {
-    ad_amount = "0";
-  } else if (ad_amount < 0) {
-    return res.status.json("invalid advance amount");
-  }
+  // if (ad_amount == 0) {
+  //   ad_amount = "0";
+  // } else if (ad_amount < 0) {
+  //   return res.status.json("invalid advance amount");
+  // }
 
   if (
     !bookingid ||
@@ -1835,9 +1835,16 @@ exports.updatebooking = async (req, res) => {
     !orderid ||
     typeof orderid !== "string" ||
     !ad_amount ||
-    typeof ad_amount !== "number"
+    typeof ad_amount !== "string"||
+    isNaN(ad_amount)
   ) {
     return res.status(400).json("invalid request");
+  }
+  if(ad_amount !== "0"){
+    ad_amount = ad_amount*1
+    if(ad_amount < 0){
+      return res.status.json("invalid advance amount");
+    }
   }
   let bookingd;
   const booking = await Booking.findOne({ bookingid, orderid })

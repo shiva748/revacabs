@@ -70,12 +70,12 @@ const Paybalance = (recived) => {
     const { amount, id: order_id, currency, prefill } = await order.json();
 
     const options = {
-      key: "rzp_test_mSFzI2USgvCZ2Y", // Enter the Key ID generated from the Dashboard
+      key: "rzp_live_YJs7U86skAdvl8", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
-      name: "Mathura Taxi",
+      name: "Reva Cabs",
       description: prefill.description,
-      image: "http://localhost:8152/icons/logo.png",
+      image: "https://revacabs.com/icons/logo.png",
       order_id: order_id,
       handler: async function (response) {
         const data = {

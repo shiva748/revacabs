@@ -51,6 +51,9 @@
   width: 90%;
   margin: 15px 0px;
 }
+.ato-con{
+  width: calc(100% - 103px);
+}
 .c-pic {
   height: 214px;
   width: 100%;
@@ -161,8 +164,7 @@
 }
 .add-inpt{
   height: 36px;
-  width: 86%;
-  min-width: 240px;
+  width: calc(100% - 103px);
   padding: 0px 5px;
   outline: none;
 }

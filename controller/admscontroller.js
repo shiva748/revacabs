@@ -3907,7 +3907,7 @@ exports.admn_addoutpackage = async (req, res) => {
           amount: iscab.charge.night,
         },
         Extrakm: {
-          amount: iscab.charge.roundtrip,
+          amount: iscab.charge.oneway,
         },
         Extrahour: {
           amount: iscab.charge.extrahour,

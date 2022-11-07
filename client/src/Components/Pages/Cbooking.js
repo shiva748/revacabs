@@ -331,7 +331,7 @@ const Cbooking = () => {
       body: JSON.stringify({
         order_id: sorder_id,
         booking_id,
-        amount: samount,
+        amount: samount.toString(),
         verificationkey,
       }),
     });
@@ -352,12 +352,12 @@ const Cbooking = () => {
     const { amount, id: order_id, currency } = await order.json();
 
     const options = {
-      key: "rzp_test_mSFzI2USgvCZ2Y", // Enter the Key ID generated from the Dashboard
+      key: "rzp_live_YJs7U86skAdvl8", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
-      name: "Sarathi cabs",
-      description: "integrating payment gateway",
-      image: "https://mathurataxi.in.net/assets/images/download-1-122x122.png",
+      name: "Reva cabs",
+      description: `${booking_id} Advance payment`,
+      image: "https://revacabs.com/icons/logo.png",
       order_id: order_id,
       handler: async function (response) {
         const data = {
@@ -386,7 +386,7 @@ const Cbooking = () => {
               rzp_id: order_id,
               orderid: sorder_id,
               bookingid: booking_id,
-              ad_amount: amount / 100,
+              ad_amount: `${amount / 100}`,
             }),
           });
           const successdat = await success.json();
@@ -476,7 +476,7 @@ const Cbooking = () => {
       body: JSON.stringify({
         orderid: sorder_id,
         bookingid: booking_id,
-        ad_amount: 0,
+        ad_amount: "0",
       }),
     });
     const data = await success.json();
@@ -740,7 +740,7 @@ const Cbooking = () => {
 
                     <div className="dtl-form-row">
                       {cstmrdtl.addtype === "auto" ? (
-                        <div style={{ width: "87%" }}>
+                        <div className="ato-con">
                           <ReactSearchAutocomplete
                             items={loca}
                             onSelect={handleOnSelect}

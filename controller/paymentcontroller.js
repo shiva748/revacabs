@@ -2,7 +2,19 @@ const Razorpay = require("razorpay");
 const Booking = require("../models/client/bookings");
 const Order = require("../models/orders");
 exports.create_order = async (req, res) => {
-  const { order_id, booking_id, amount, verificationkey } = req.body;
+  let { order_id, booking_id, amount, verificationkey } = req.body;
+  if (
+    !order_id ||
+    !amount ||
+    !verificationkey ||
+    typeof order_id !== "string" ||
+    typeof amount !== "string" ||
+    typeof verificationkey !== "string" ||
+    isNaN(amount)
+  ) {
+    return res.status(400).json("failed to fetch data");
+  }
+  amount = amount * 1
   const isbooking = await Booking.findOne({
     orderid: order_id,
     verificationkey,
@@ -137,14 +149,14 @@ exports.success = async (req, res) => {
 // === === === Booking balance === === === //
 exports.create_order_cmpy = async (req, res) => {
   const user = req.user;
-  const { amount, bookingid, operatorid } = req.body;
+  const { amount, bookingid} = req.body;
   const booking = await Booking.findOne({
     bookingid,
     bookingstatus: "completed",
   })
     .then((res) => {
       return res;
-    })
+    }) 
     .catch((error) => {
       res.status(500).json("failed to fetch data");
       return "block";
