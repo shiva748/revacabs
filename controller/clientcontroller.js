@@ -2124,6 +2124,7 @@ exports.cancel_bookreq = async (req, res) => {
         };
       }
     } else {
+      refund = 0;
       data = {
         ...data,
         billing: {
