@@ -9,6 +9,7 @@ import { AiOutlineClear } from "react-icons/ai";
 import { CgDetailsMore } from "react-icons/cg";
 import { FaTimes } from "react-icons/fa";
 import "./Hrlydtl.css";
+import { set } from "mongoose";
 
 const Outstationdtl = (recived) => {
   const setdtl = recived.setdtl;
@@ -78,6 +79,9 @@ const Outstationdtl = (recived) => {
   };
   const outstationupd = async () => {
     const { lstng } = upd;
+    if (itm.list.toString() === lstng) {
+      return alert("No changes has been made");
+    }
     const fromcode = itm.fromcode;
     const tocode = itm.tocode;
     if (
@@ -91,6 +95,7 @@ const Outstationdtl = (recived) => {
     ) {
       return alert("invalid request");
     }
+    setprcs(true);
     const result = await fetch("/oceannodes/service/outstation/update", {
       method: "POST",
       headers: {
@@ -106,10 +111,11 @@ const Outstationdtl = (recived) => {
     if (result) {
       alert(data);
       setdtl({ display: false });
-      return outstnlstr(true);
+      outstnlstr(true);
     } else {
       alert("Failed");
     }
+    setprcs(false);
   };
   const addonepackage = async () => {
     let {
@@ -130,6 +136,7 @@ const Outstationdtl = (recived) => {
       sttx,
       sttxamt,
     } = add;
+    setadd({ ...add, prcs: true });
     const result = await fetch("/oceannodes/service/outstation/add/oneway", {
       method: "POST",
       headers: {
@@ -167,6 +174,7 @@ const Outstationdtl = (recived) => {
     } else {
       alert(data);
     }
+    setadd({ ...add, prcs: false });
   };
 
   // === === === add or edt roundtrip package === === === //
@@ -186,6 +194,7 @@ const Outstationdtl = (recived) => {
       expand,
       dayrates,
     } = add;
+    setadd({ ...add, prcs: true });
     const result = await fetch("/oceannodes/service/outstation/add/roundtrip", {
       method: "POST",
       headers: {
@@ -219,6 +228,7 @@ const Outstationdtl = (recived) => {
     } else {
       alert(data);
     }
+    setadd({ ...add, prcs: false });
   };
 
   // === === === roundtrip add end  === === === //
@@ -254,7 +264,6 @@ const Outstationdtl = (recived) => {
       if (!itm.results.some((itm) => itm === data)) {
         setadd({ ...add, display: true, actn: "nw" });
       } else {
-        console.log(data);
         setadd({
           display: true,
           prcs: false,
@@ -273,13 +282,13 @@ const Outstationdtl = (recived) => {
           avil: data.isavilable ? "true" : "false",
           oprtramt: data.oprtramt,
           minbd: data.minchrg,
+          hours:data.hours.toString()
         });
       }
     } else if (type === "round") {
       if (!itm.roundresults.some((itm) => itm === data)) {
         setadd({ ...add, display: true, actn: "nw" });
       } else {
-        console.log(data);
         let dayrates = [];
         data.dayrates.map((itm) => {
           return dayrates.push({
@@ -575,7 +584,7 @@ const Outstationdtl = (recived) => {
               )}
               {add.display ? (
                 <div className="form-container">
-                  <div className="form-box">
+                  <div className={add.prcs ? "form-box ovrly-ad" : "form-box"}>
                     <div className="form-lgocon">
                       <img src="/icons/logo.png" alt="" srcSet="" />
                     </div>
@@ -814,7 +823,9 @@ const Outstationdtl = (recived) => {
                         }}
                       >
                         <button
-                          className="dtl-clsr"
+                          className={
+                            add.prcs ? "dtl-clsr ldng-btn" : "dtl-clsr"
+                          }
                           style={{
                             margin: "0px 10px",
                             background: "lightgreen",
@@ -1034,7 +1045,7 @@ const Outstationdtl = (recived) => {
               )}
               {add.display ? (
                 <div className="form-container">
-                  <div className="form-box">
+                  <div className={add.prcs ? "form-box ovrly-ad" : "form-box"}>
                     <div className="form-lgocon">
                       <img src="/icons/logo.png" alt="" srcSet="" />
                     </div>
@@ -1421,7 +1432,9 @@ const Outstationdtl = (recived) => {
                         }}
                       >
                         <button
-                          className="dtl-clsr"
+                          className={
+                            add.prcs ? "dtl-clsr ldng-btn" : "dtl-clsr"
+                          }
                           style={{
                             margin: "0px 10px",
                             background: "lightgreen",

@@ -111,6 +111,7 @@ const Citydtl = (recived) => {
     } else {
       alert(data);
     }
+    setprcs(false)
   };
 
   // === === === locality === === === //

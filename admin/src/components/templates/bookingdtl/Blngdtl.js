@@ -151,7 +151,7 @@ const Blngdtl = (recived) => {
         }
       }
     } else {
-      if (itm.billing.cancel.refund > 0) {
+      if (itm.billing.cancel.refund >= 0) {
         if (refunded) {
           if (
             typeof refunded !== "string" ||
@@ -198,6 +198,7 @@ const Blngdtl = (recived) => {
       }
     }
     updt = { ...updt, bookingid: itm.bookingid, hstry: false };
+    setprcs(true)
     const res = await fetch("/oceannodes/booking/billing/update", {
       method: "POST",
       headers: {
@@ -205,16 +206,20 @@ const Blngdtl = (recived) => {
       },
       body: JSON.stringify(updt),
     });
+    
     const data = await res.json();
     if (res.status !== 201) {
       mainbilling(true);
       setdtl({ display: false, id: "" });
+      setprcs(false)
       return alert("Failed to update billing");
     } else {
       alert(data);
       mainbilling(true);
+      setprcs(false)
       setdtl({ display: false, id: "" });
     }
+
   };
   return (
     <>
@@ -511,7 +516,7 @@ const Blngdtl = (recived) => {
                       style={{ margin: "auto" }}
                       onClick={updateblng}
                     >
-                      Update
+                      <span>Update</span>
                     </button>
                   </div>
                 </>

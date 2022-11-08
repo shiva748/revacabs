@@ -112,6 +112,7 @@ const Citydtl = (recived) => {
     } else {
       alert(data);
     }
+    setprcs(false)
   };
   const handelimage = (e) => {
     if (!e.target.files[0]) {

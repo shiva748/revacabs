@@ -48,10 +48,10 @@ const Payment = () => {
       }
     }
   };
-  const payment = async () => {
+  const payment = async (bypass) => {
     const { id, rsn, status } = filter;
     let { entry, pag } = lst;
-
+    if(bypass !== true){
     if (
       !entry ||
       isNaN(entry) ||
@@ -66,7 +66,7 @@ const Payment = () => {
         return;
       }
     }
-
+  }
     if (id) {
       if (typeof id !== "string") {
         return alert("Invalid id");
@@ -148,8 +148,11 @@ const Payment = () => {
 
   // === === === update payment === === === //
 
-  const [updtpmt, setupdtpmt] = useState({ status: "" });
+  const [updtpmt, setupdtpmt] = useState({ status: "", load:"" });
   const updtpmts = async () => {
+    if(updtpmt.load){
+      return
+    }
     let { status } = updtpmt;
     let { rzp_orderid } = dtl;
     if (
@@ -161,6 +164,7 @@ const Payment = () => {
     ) {
       return alert("Invalid request");
     }
+    setupdtpmt({...updtpmt, load:true})
     const result = await fetch("/oceannodes/payment/update", {
       method: "PUT",
       headers: {
@@ -175,10 +179,11 @@ const Payment = () => {
     if (result.status === 201) {
       payment(true);
       setdtl({ dfd });
-      setupdtpmt({ status: "" });
+      setupdtpmt({ status: "", load:false });
       alert(data);
     } else {
       alert(data);
+      setupdtpmt({...updtpmt, load:false})
     }
   };
 
@@ -377,7 +382,7 @@ const Payment = () => {
         </div>
       )}
       {dtl.display ? (
-        <div className="sml-dtl">
+        <div className={updtpmt.load?"sml-dtl ovrly-ad":"sml-dtl"}>
           <div className="sml-dtlbx">
             <div className="dtl-hd" style={{ display: "block" }}>
               <div
@@ -460,11 +465,11 @@ const Payment = () => {
             <div className="inpt-row">
               <button
                 type="submit"
-                className="ctl-btn"
+                className={updtpmt.load?"ctl-btn ldng-btn":"ctl-btn"}
                 style={{ margin: "auto" }}
                 onClick={updtpmts}
               >
-                Submit
+                <span>Submit</span>
               </button>
             </div>
           </div>

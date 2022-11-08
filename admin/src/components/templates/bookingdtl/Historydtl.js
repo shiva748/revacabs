@@ -3,7 +3,7 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import { CgArrowsExchange, CgArrowRight } from "react-icons/cg";
 import { GoVerified } from "react-icons/go";
 import { FiRefreshCw } from "react-icons/fi";
-import { ImCross} from "react-icons/im";
+import { ImCross } from "react-icons/im";
 import Dataload from "../Loading/Dataload";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -149,7 +149,7 @@ const Hstrydtl = (recived) => {
         }
       }
     } else {
-      if (itm.billing.cancel.refund > 0) {
+      if (itm.billing.cancel.refund >= 0) {
         if (refunded) {
           if (
             typeof refunded !== "string" ||
@@ -196,6 +196,7 @@ const Hstrydtl = (recived) => {
       }
     }
     updt = { ...updt, bookingid: itm.bookingid, hstry: true };
+    setprcs(true);
     const res = await fetch("/oceannodes/booking/billing/update", {
       method: "POST",
       headers: {
@@ -207,10 +208,12 @@ const Hstrydtl = (recived) => {
     if (res.status !== 201) {
       mainhistory(true);
       setdtl({ display: false, id: "" });
+      setprcs(false);
       return alert("Failed to update billing");
     } else {
       alert(data);
       mainhistory(true);
+      setprcs(false);
       setdtl({ display: false, id: "" });
     }
   };

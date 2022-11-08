@@ -60,6 +60,9 @@ const Hourlydtl = (recived) => {
   };
   const hrlyupd = async () => {
     const { lstng } = upd;
+    if(itm.list.toString() === lstng){
+      return alert("No changes has been made")
+    }
     const cty = itm.from;
     const ctycode = itm.fromcode;
     const longlat = itm.longlat;
@@ -76,6 +79,7 @@ const Hourlydtl = (recived) => {
     ) {
       return alert("invalid request");
     }
+    setprcs(true)
     const result = await fetch("/oceannodes/service/hourlypackage/update", {
       method: "POST",
       headers: {
@@ -92,10 +96,11 @@ const Hourlydtl = (recived) => {
     if (result) {
       alert(data);
       setdtl({ display: false });
-      return mainlstr(true);
+      mainlstr(true);
     } else {
       alert("Failed");
     }
+    setprcs(false)
   };
   const addpackage = async () => {
     const {
@@ -113,6 +118,7 @@ const Hourlydtl = (recived) => {
       minbd,
       bsfr,
     } = add;
+    setadd({...add, prcs:true})
     const result = await fetch("/oceannodes/service/hourlypackage/add", {
       method: "POST",
       headers: {
@@ -145,6 +151,7 @@ const Hourlydtl = (recived) => {
     } else {
       alert(data);
     }
+    setadd({...add, prcs:false})
   };
   useEffect(() => {
     hrlylstr();
@@ -397,7 +404,7 @@ const Hourlydtl = (recived) => {
               )}
               {add.display ? (
                 <div className="form-container">
-                  <div className="form-box">
+                  <div className={add.prcs?"form-box ovrly-ad":"form-box"}>
                     <div className="form-lgocon">
                       <img src="/icons/logo.png" alt="" srcSet="" />
                     </div>
@@ -611,7 +618,7 @@ const Hourlydtl = (recived) => {
                         }}
                       >
                         <button
-                          className="dtl-clsr"
+                          className={add.prcs?"dtl-clsr ldng-btn":"dtl-clsr"}
                           style={{
                             margin: "0px 10px",
                             background: "lightgreen",

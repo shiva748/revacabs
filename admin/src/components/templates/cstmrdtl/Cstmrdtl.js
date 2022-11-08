@@ -33,6 +33,10 @@ const Cstmrdtl = (recived) => {
     setprcs(false);
   };
   const update = async (req, res) => {
+    if(typeof email !== "string" || typeof phone !== "string" || typeof status !== "string"){
+      return alert("Invalid request")
+    }
+    setprcs(true);
     const result = await fetch("/oceannodes/client/status", {
       method: "PUT",
       headers: {
@@ -47,8 +51,10 @@ const Cstmrdtl = (recived) => {
     const data = await result.json();
     if (result.status === 201) {
       client();
+      setprcs(true);
       return alert("update successfull");
     } else {
+      setprcs(true);
       alert(data);
     }
   };

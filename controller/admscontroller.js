@@ -952,7 +952,7 @@ exports.admn_updtblng = async (req, res) => {
       }
     }
   } else {
-    if (isbooking.billing.cancel.refund > 0) {
+    if (isbooking.billing.cancel.refund >= 0) {
       if (refunded) {
         if (
           typeof refunded !== "string" ||
@@ -2481,11 +2481,11 @@ exports.admn_updatecity = async (req, res) => {
     "Uttarakhand",
     "Uttar Pradesh",
     "West Bengal",
-    "India",
+    "Delhi",
   ];
   let { city, state, longlat, code } = req.body;
   if (!code || typeof code !== "string" || isNaN(code)) {
-    return res.status(400).json("invalid request 4");
+    return res.status(400).json("invalid request");
   }
   let updt = {};
   if (city && state) {
@@ -2494,7 +2494,7 @@ exports.admn_updatecity = async (req, res) => {
       typeof state !== "string" ||
       !valstate.some((itm) => itm === state)
     ) {
-      return res.status(400).json("invalid request 3");
+      return res.status(400).json("invalid request");
     }
     updt = {
       ...updt,
@@ -2506,7 +2506,7 @@ exports.admn_updatecity = async (req, res) => {
   }
   if (longlat) {
     if (typeof longlat !== "string") {
-      return res.status(400).json("invalid request 2");
+      return res.status(400).json("invalid request");
     }
     updt = { ...updt, longlat };
   }
@@ -3513,6 +3513,14 @@ exports.admn_upcabmodel = async (req, res) => {
     const cabup = uploadimage(modimg, iscab.name);
     if (!cabup.result) {
       return res.status(400).json("failed to upload the image");
+    }
+  }
+  console.log(updt)
+  if(JSON.stringify(updt) === "{}" ){
+    if(modimg){
+      return res.status(201).json("Image uploded successfully")
+    }else{
+      return res.status(400).json("No changes has been made")
     }
   }
   const result = await Cabmod.updateOne(
@@ -4945,6 +4953,7 @@ exports.admn_updatetour = async (req, res) => {
 
 // === === === payments lstr === === === //
 const Order = require("../models/orders");
+const { json } = require("express");
 exports.admn_pmtlstr = async (req, res) => {
   let { id, pag, rsn, entry, status } = req.body;
   if (!entry || typeof entry !== "string" || !pag || typeof pag !== "string") {
