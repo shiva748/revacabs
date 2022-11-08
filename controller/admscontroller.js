@@ -3484,7 +3484,7 @@ exports.admn_upcabmodel = async (req, res) => {
     updt = { ...updt, "charge.driveraid": driveraid * 1 };
   }
   const uploadimage = (imagedata, name) => {
-    let paths = "../public/images/car/";
+    let paths = `../public/images/car/${iscab.cab_id}/`;
     var matches = imagedata.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
       response = {};
 
