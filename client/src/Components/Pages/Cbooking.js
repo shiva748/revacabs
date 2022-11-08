@@ -1185,9 +1185,9 @@ const Cbooking = () => {
                       </>
                     ) : (
                       <>
-                        <span>
-                          <FcApproval />
-                        </span>
+                        <p>
+                          <FaTimesCircle />
+                        </p>
                         Gst Excluded (5%)
                       </>
                     )}
@@ -1202,9 +1202,9 @@ const Cbooking = () => {
                       </>
                     ) : (
                       <>
-                        <span>
-                          <FcApproval />
-                        </span>
+                        <p>
+                          <FaTimesCircle />
+                        </p>
                         Exclusive of Toll's and State Tax
                       </>
                     )}
@@ -1237,7 +1237,7 @@ const Cbooking = () => {
                     <p>
                       <FaTimesCircle />
                     </p>
-                    Extra charges after 167 km - Rs.
+                    Extra charges after {itm.distance} km - Rs.
                     {itm.othercharges.Extrakm.amount}/km
                   </li>
                   <li>
