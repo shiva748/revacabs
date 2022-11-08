@@ -4309,18 +4309,21 @@ exports.admn_addoutpackageround = async (req, res) => {
           !itm.totalpayable ||
           !itm.oprtramt ||
           !itm.minchrg ||
+          !itm.bsfr||
           typeof itm.distance !== "string" ||
           typeof itm.day !== "string" ||
           typeof itm.regularamount !== "string" ||
           typeof itm.totalpayable !== "string" ||
           typeof itm.oprtramt !== "string" ||
           typeof itm.minchrg !== "string" ||
+          typeof itm.bsfr !== "string" ||
           isNaN(itm.day) ||
           isNaN(itm.distance) ||
           isNaN(itm.regularamount) ||
           isNaN(itm.totalpayable) ||
           isNaN(itm.oprtramt) ||
-          isNaN(itm.minchrg)
+          isNaN(itm.minchrg)||
+          isNaN(itm.bsfr)
       )
     ) {
       return res.status(400).json("invalid request");
@@ -4334,26 +4337,23 @@ exports.admn_addoutpackageround = async (req, res) => {
       !expand.totalpayable ||
       !expand.oprtramt ||
       !expand.minchrg ||
+      !expand.bsfr||
       typeof expand.distance !== "string" ||
       typeof expand.regularamount !== "string" ||
       typeof expand.totalpayable !== "string" ||
       typeof expand.oprtramt !== "string" ||
       typeof expand.minchrg !== "string" ||
+      typeof expand.bsfr !== "string" ||
       isNaN(expand.distance) ||
       isNaN(expand.regularamount) ||
       isNaN(expand.totalpayable) ||
       isNaN(expand.oprtramt) ||
-      isNaN(expand.minchrg)
+      isNaN(expand.minchrg)||
+      isNaN(expand.bsfr)
     ) {
       return res.status(400).json("invalid request");
     }
     pkg = { ...pkg, expand };
-  }
-  if (bsfr) {
-    if (typeof bsfr !== "number" || isNaN(bsfr)) {
-      return res.status(400).json("invalid request");
-    }
-    pkg = { ...pkg, basefare: bsfr };
   }
   if (sttx) {
     if (typeof sttx !== "string" || !bools.some((itm) => itm === sttx)) {

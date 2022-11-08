@@ -69,7 +69,6 @@ const rate = new mongoose.Schema({
       upvalid: { type: Array },
       category: { type: String, required: true },
       rdr: { type: Number, required: true },
-      basefare: { type: Number, required: true },
       equivalent: {
         isequi: { type: Boolean, required: true },
         txt: { type: String },
@@ -105,6 +104,7 @@ const rate = new mongoose.Schema({
           totalpayable: { type: Number, required: true },
           oprtramt: { type: Number, required: true },
           minchrg: { type: Number, required: true },
+          bsfr: { type: Number, required: true },
         },
       ],
       expand: {
@@ -113,6 +113,7 @@ const rate = new mongoose.Schema({
         totalpayable: { type: Number, required: true },
         oprtramt: { type: Number, required: true },
         minchrg: { type: Number, required: true },
+        bsfr: { type: Number, required: true },
       },
     },
   ],

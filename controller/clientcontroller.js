@@ -1532,7 +1532,7 @@ exports.crt_booking = async (req, res) => {
           minchrg: toset.minchrg,
           equivalent: selected.equivalent,
           regularamount: toset.regularamount,
-          basefare: selected.basefare,
+          basefare: toset.bsfr,
           othercharges: selected.othercharges,
           totalpayable: toset.totalpayable,
           oprtramt: toset.oprtramt,
@@ -1545,6 +1545,7 @@ exports.crt_booking = async (req, res) => {
           distance: lp.distance + expan.distance * rd,
           regularamount: lp.regularamount + expan.regularamount * rd,
           totalpayable: lp.totalpayable + expan.totalpayable * rd,
+          bsfr: lp.bsfr + expan.bsfr * rd,
           oprtramt: lp.oprtramt + expan.oprtramt * rd,
           minchrg: lp.minchrg + expan.minchrg * rd,
           day: lp.day + 1 * rd,
@@ -1562,7 +1563,7 @@ exports.crt_booking = async (req, res) => {
           minchrg: toset.minchrg,
           equivalent: selected.equivalent,
           regularamount: toset.regularamount,
-          basefare: selected.basefare,
+          basefare: toset.bsfr,
           othercharges: selected.othercharges,
           totalpayable: toset.totalpayable,
           oprtramt: toset.oprtramt,
@@ -2523,10 +2524,10 @@ exports.select_car = async (req, res) => {
               group_id: itm.group_id,
               rdr: itm.rdr,
               equivalent: itm.equivalent,
-              basefare: itm.basefare,
               regularamount: toset.regularamount,
               othercharges: itm.othercharges,
               totalpayable: toset.totalpayable,
+              basefare:toset.bsfr,
             };
             return results.push(new_obj);
           } else {
@@ -2536,6 +2537,7 @@ exports.select_car = async (req, res) => {
             const np = {
               distance: lp.distance + expan.distance * rd,
               regularamount: lp.regularamount + expan.regularamount * rd,
+              bsfr:lp.bsfr + expan.bsfr * rd,
               totalpayable: lp.totalpayable + expan.totalpayable * rd,
               day: lp.day + 1 * rd,
             };
@@ -2554,6 +2556,7 @@ exports.select_car = async (req, res) => {
               regularamount: np.regularamount,
               othercharges: itm.othercharges,
               totalpayable: np.totalpayable,
+              basefare:np.bsfr,
             };
             return results.push(new_obj);
           }

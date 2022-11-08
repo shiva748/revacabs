@@ -188,7 +188,6 @@ const Outstationdtl = (recived) => {
       driverad,
       adv,
       avil,
-      bsfr,
       sttx,
       sttxamt,
       expand,
@@ -212,7 +211,6 @@ const Outstationdtl = (recived) => {
         driverad,
         adv,
         avil,
-        bsfr: bsfr * 1,
         sttx,
         sttxamt,
         expand,
@@ -282,7 +280,7 @@ const Outstationdtl = (recived) => {
           avil: data.isavilable ? "true" : "false",
           oprtramt: data.oprtramt,
           minbd: data.minchrg,
-          hours:data.hours.toString()
+          hours: data.hours.toString(),
         });
       }
     } else if (type === "round") {
@@ -298,6 +296,7 @@ const Outstationdtl = (recived) => {
             oprtramt: itm.oprtramt.toString(),
             regularamount: itm.regularamount.toString(),
             totalpayable: itm.totalpayable.toString(),
+            bsfr: itm.bsfr.toString(),
           });
         });
         setadd({
@@ -306,7 +305,6 @@ const Outstationdtl = (recived) => {
           actn: "edt",
           name: data.name,
           eqvcab: data.equivalent.isequi ? "true" : "false",
-          bsfr: data.basefare,
           sttx: data.othercharges.Tolltaxes.isinclude ? "true" : "false",
           sttxamt: data.othercharges.Tolltaxes.amount,
           gst: data.othercharges.GST.isinclude ? "true" : "false",
@@ -317,6 +315,7 @@ const Outstationdtl = (recived) => {
             distance: data.expand.distance.toString(),
             minchrg: data.expand.minchrg.toString(),
             oprtramt: data.expand.oprtramt.toString(),
+            bsfr: data.expand.bsfr.toString(),
             regularamount: data.expand.regularamount.toString(),
             totalpayable: data.expand.totalpayable.toString(),
           },
@@ -326,8 +325,8 @@ const Outstationdtl = (recived) => {
     }
   };
   const handeldayrts = () => {
-    const { distance, regamt, totalamt, oprtramt, minbd } = add;
-    if (!distance || !regamt || !totalamt || !oprtramt || !minbd) {
+    const { distance, regamt, totalamt, oprtramt, minbd, bsfr } = add;
+    if (!distance || !regamt || !totalamt || !oprtramt || !minbd || !bsfr) {
       return alert("Please fill all the fields of day rates");
     }
     let dayrates = add.dayrates;
@@ -338,6 +337,7 @@ const Outstationdtl = (recived) => {
         regularamount: regamt,
         totalpayable: totalamt,
         oprtramt,
+        bsfr: bsfr,
         minchrg: minbd,
       });
     } else {
@@ -347,6 +347,7 @@ const Outstationdtl = (recived) => {
         regularamount: regamt,
         totalpayable: totalamt,
         oprtramt,
+        bsfr: bsfr,
         minchrg: minbd,
       };
     }
@@ -356,6 +357,7 @@ const Outstationdtl = (recived) => {
       regamt: "",
       totalamt: "",
       oprtramt: "",
+      bsfr: "",
       minbd: "",
       dayrates,
     });
@@ -1100,19 +1102,6 @@ const Outstationdtl = (recived) => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Base Fare</td>
-                            <td>
-                              <input
-                                type="number"
-                                name="bsfr"
-                                className="fltr-input"
-                                value={add.bsfr}
-                                onChange={handelpkg}
-                                placeholder="Base fare/Km"
-                              />
-                            </td>
-                          </tr>
-                          <tr>
                             <td>Gst</td>
                             <td>
                               <select
@@ -1209,6 +1198,19 @@ const Outstationdtl = (recived) => {
                               value={add.distance}
                               placeholder="Distance"
                               onChange={handelpkg}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Base Fare</td>
+                          <td>
+                            <input
+                              type="number"
+                              name="bsfr"
+                              className="fltr-input"
+                              value={add.bsfr}
+                              onChange={handelpkg}
+                              placeholder="Base fare"
                             />
                           </td>
                         </tr>
@@ -1334,6 +1336,7 @@ const Outstationdtl = (recived) => {
                                         totalamt: itm.totalpayable,
                                         oprtramt: itm.oprtramt,
                                         minbd: itm.minchrg,
+                                        bsfr: itm.bsfr,
                                         nwday: false,
                                       });
                                     }}
@@ -1369,6 +1372,20 @@ const Outstationdtl = (recived) => {
                             />
                           </td>
                         </tr>
+                        <tr>
+                          <td>Base Fare</td>
+                          <td>
+                            <input
+                              type="number"
+                              name="bsfr"
+                              className="fltr-input"
+                              value={add.expand.bsfr}
+                              onChange={handelex}
+                              placeholder="Base fare"
+                            />
+                          </td>
+                        </tr>
+                        <tr></tr>
                         <tr>
                           <td>Regular amount</td>
                           <td>
