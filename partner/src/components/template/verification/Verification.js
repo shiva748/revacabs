@@ -69,26 +69,59 @@ const Verification = (recived) => {
     } else {
       console.log("file do exists");
     }
-    if (e.target.name === "aadhaar") {
-      setaadhaar({
-        ...aadhaar,
-        // eslint-disable-next-line
-        ["src"]: URL.createObjectURL(e.target.files[0]),
-      });
-    } else if (e.target.name === "profile") {
-      setprofile({
-        ...profile,
-        // eslint-disable-next-line
-        ["src"]: URL.createObjectURL(e.target.files[0]),
-      });
-    } else if (e.target.name === "dl") {
-      setdl({
-        ...dl,
-        // eslint-disable-next-line
-        ["src"]: URL.createObjectURL(e.target.files[0]),
-      });
-    }
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.addEventListener("load", ()=>{
+      if (e.target.name === "aadhaar") {
+        setaadhaar({
+          ...aadhaar,
+          // eslint-disable-next-line
+          ["src"]: reader.result,
+        });
+      } else if (e.target.name === "profile") {
+        setprofile({
+          ...profile,
+          // eslint-disable-next-line
+          ["src"]: reader.result,
+        });
+      } else if (e.target.name === "dl") {
+        setdl({
+          ...dl,
+          // eslint-disable-next-line
+          ["src"]: reader.result,
+        });
+      }
+    })
+    reader.readAsDataURL(file)
   };
+
+  // const handelimage = (e) => {
+  //   if (!e.target.files[0]) {
+  //     console.log("file do not exist");
+  //     return;
+  //   } else {
+  //     console.log("file do exists");
+  //   }
+  //   if (e.target.name === "aadhaar") {
+  //     setaadhaar({
+  //       ...aadhaar,
+  //       // eslint-disable-next-line
+  //       ["src"]: URL.createObjectURL(e.target.files[0]),
+  //     });
+  //   } else if (e.target.name === "profile") {
+  //     setprofile({
+  //       ...profile,
+  //       // eslint-disable-next-line
+  //       ["src"]: URL.createObjectURL(e.target.files[0]),
+  //     });
+  //   } else if (e.target.name === "dl") {
+  //     setdl({
+  //       ...dl,
+  //       // eslint-disable-next-line
+  //       ["src"]: URL.createObjectURL(e.target.files[0]),
+  //     });
+  //   }
+  // };
 
   // const [image, setimage] = useState(null);
   const [crop, setcrop] = useState({ aadhaar: null, profile: null, dl: null });
