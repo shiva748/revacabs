@@ -57,7 +57,7 @@ app.use("/api/public", publicr);
 app.use("/payment", paymentr);
 app.use("/oceannodes", admnr);
 app.use("/driver", driverr);
-/*admin.use(express.static("admin/build"));
+/*admin.use(blocker, express.static("admin/build"));
 admin.get("*", blocker, (req, res) => {
   res.sendFile(path.resolve(__dirname, "admin", "build", "index.html"));
 });
