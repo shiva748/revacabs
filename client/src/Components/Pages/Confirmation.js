@@ -31,6 +31,7 @@ const Confirmation = () => {
   return (
     <>
       <Helmet>
+      <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://checkout.razorpay.com/v1/checkout.js"/>
         <meta charSet="utf-8" />
         <title>
           {`${
