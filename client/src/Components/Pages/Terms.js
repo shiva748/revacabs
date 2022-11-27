@@ -6,7 +6,7 @@ const Terms = () => {
   return (
     <>
     <Helmet>
-    <meta http-equiv="Content-Security-Policy" content="script-src https://checkout.razorpay.com/v1/checkout.js 'self';"/>
+    <meta http-equiv="Content-Security-Policy" content="script-src https://checkout.razorpay.com/v1/checkout.js *.revacabs.com;"/>
         <meta charSet="utf-8" />
         <title>Terms and Conditions - Revacabs</title>
         <meta
