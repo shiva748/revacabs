@@ -210,7 +210,7 @@ const Account = () => {
         />
         <link rel="canonical" href="http://revacabs.com/" />
         <meta name="robots" content="noindex,nofollow" />
-        <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://checkout.razorpay.com/v1/checkout.js"/>
+        <meta http-equiv="Content-Security-Policy" content="script-src https://checkout.razorpay.com/v1/checkout.js 'self';"/>
       </Helmet>
       {loading ? (
         <Loading />
