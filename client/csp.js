@@ -1,10 +1,14 @@
 module.exports = {
     dev: {
-    "default-src": ["'self'"],
-    "style-src": [
+    "default-src": [
       "'self'",
-      "https://*.google.com",
-      "https://*.razorpay.com"
+      "https://*.razorpay.com",
+      "'unsafe-inline'"
+    ],
+    "script-src":[
+      "'self'",
+      "https://*.razorpay.com",
+      "'unsafe-inline'"
     ]
     },
     prod: {
@@ -12,7 +16,6 @@ module.exports = {
         "'self'",
         "https://*.facebook.com",
         "https://*.razorpay.com",
-        "unsafe-inline"
       ],  // can be either a string or an array.
     "style-src": [
       "'self'",

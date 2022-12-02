@@ -559,7 +559,7 @@ const Cbooking = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <meta charSet="utf-8" />
         <title>
           {servicedata.bookingtype === "local"
@@ -584,7 +584,7 @@ const Cbooking = () => {
         />
         <link rel="canonical" href="http://revacabs.com/" />
         <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
+      </Helmet> */}
       <div className="page-head">
         <span className="page-head-text">Complete booking</span>
       </div>
