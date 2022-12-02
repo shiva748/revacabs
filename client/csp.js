@@ -12,15 +12,24 @@ module.exports = {
     "style-src": [
       "'self'",
       "https://*.facebook.com",
+      "'unsafe-inline'"
     ],
     "script-src":[
         "'self'",
       "https://*.google.com",
-      "https://*.razorpay.com"
+      "https://*.razorpay.com",
+      "'unsafe-inline'"
     ],
     "connect-src": [
       "'self'",
-      "https://*.razorpay.com"
+      "https://*.razorpay.com",
+      "'unsafe-inline'"
+    ],
+    "img-src":[
+        "'self'",
+        "https://*.google.com",
+        "https://*.razorpay.com",
+        "'unsafe-inline'"
     ]
     }
   }
