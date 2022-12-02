@@ -583,7 +583,6 @@ const Cbooking = () => {
           }
         />
         <link rel="canonical" href="http://revacabs.com/" />
-        <meta http-equiv="Content-Security-Policy" content="script-src https://checkout.razorpay.com *.revacabs.com;"/>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <div className="page-head">
