@@ -322,7 +322,7 @@ const Packagedetail = () => {
   const [loading, setloading] = useState(true);
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <meta charSet="utf-8" />
         <title>{mt.title ? mt.title : ""}</title>
         <meta
@@ -331,7 +331,7 @@ const Packagedetail = () => {
         />
          <meta name="keywords" content={mt.keywords?mt.keywords:""}/>
         <link rel="canonical" href="http://revacabs.com/" />
-      </Helmet>
+      </Helmet> */}
       {err ? (
         <Error />
       ) : loading ? (

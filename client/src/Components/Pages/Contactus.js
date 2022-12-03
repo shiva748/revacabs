@@ -34,7 +34,7 @@ const Contact = () => {
 
   return (
     <>
-    <Helmet>
+    {/* <Helmet>
         <meta charSet="utf-8" />
         <title>Contact Revacabs</title>
         <meta
@@ -43,7 +43,7 @@ const Contact = () => {
         />
          <meta name="keywords" content={"Reva Cabs, Reva Cabs Contact, Contact"}/>
         <link rel="canonical" href="http://revacabs.com/" />
-      </Helmet>
+      </Helmet> */}
       <section className="contact">
         <section className="map-container">
           <iframe

@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 const Pripol = () => {
   return (
     <>
-    <Helmet>
+    {/* <Helmet>
         <meta charSet="utf-8" />
         <title>Privacy Policy - Revacabs</title>
         <meta
@@ -14,7 +14,7 @@ const Pripol = () => {
         />
          <meta name="keywords" content={"Reva Cabs, Reva Privacy Policy, Privacy Policy"}/>
         <link rel="canonical" href="http://revacabs.com/" />
-      </Helmet>
+      </Helmet> */}
     <section className="term_sec">
       <div>
         <h5>Privacy Policy for Reva Cabs</h5>

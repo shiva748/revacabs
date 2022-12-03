@@ -175,7 +175,7 @@ const Tourpackage = () => {
   }, []);
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <meta charSet="utf-8" />
         <title>
           Book {filter.actv ? `${filter.actv} ` : ""}Holiday Packages:{" "}
@@ -193,7 +193,7 @@ const Tourpackage = () => {
           } trip.`}
         />
         <link rel="canonical" href="http://revacabs.com/" />
-      </Helmet>
+      </Helmet> */}
       <div
         className="tour-con"
         style={{

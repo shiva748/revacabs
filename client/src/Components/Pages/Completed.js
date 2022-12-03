@@ -258,7 +258,7 @@ const Completed = () => {
   }, []);
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <meta charSet="utf-8" />
         <title>
           {`${
@@ -280,7 +280,7 @@ const Completed = () => {
               : ""
           } Completed Bookings`}
         />
-      </Helmet>
+      </Helmet> */}
       {loading ? (
         <Loading />
       ) : (
