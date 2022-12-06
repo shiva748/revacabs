@@ -141,7 +141,6 @@ const Home = () => {
         <Loading />
       ) : (
         <>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"/>
           <div className="fl-con">
             <section className="top_banner">
               <div className="top-banner-container">
