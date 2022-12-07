@@ -19,6 +19,7 @@ const vhost = require("vhost");
 const admin = express();
 const client = express();
 const partner = express();
+const payment = express();
 const blocker = require("./Middleware/blocker")
 // connections
 require("./db/conn");
@@ -70,6 +71,11 @@ app.use(vhost("partners.revacabs.com", partner));
 client.use(express.static("client/build"));
 client.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+app.use(vhost("payment.revacabs.com", payment));
+payment.use(express.static("payment/client/"));
+payment.get("/client", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "payment","client", "booking.html"));
 });
 app.use(vhost("www.revacabs.com", client));
 app.use(vhost("revacabs.com", client));
