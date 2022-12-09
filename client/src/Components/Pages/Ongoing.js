@@ -424,7 +424,7 @@ const Ongoing = () => {
   }, []);
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
         <title>
           {`${
@@ -448,7 +448,7 @@ const Ongoing = () => {
         />
         <link rel="canonical" href="http://revacabs.com/" />
         <meta name="robots" content="noindex,nofollow" />
-      </Helmet> */}
+      </Helmet>
       {loading ? (
         <Loading />
       ) : (

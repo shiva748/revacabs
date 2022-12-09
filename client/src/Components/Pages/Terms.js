@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 const Terms = () => {
   return (
     <>
-    {/* <Helmet>
+    <Helmet>
         <meta charSet="utf-8" />
         <title>Terms and Conditions - Revacabs</title>
         <meta
@@ -14,7 +14,7 @@ const Terms = () => {
         />
          <meta name="keywords" content={"Reva Cabs, Reva Cabs Terms, Terms & condition"}/>
         <link rel="canonical" href="http://revacabs.com/" />
-      </Helmet> */}
+      </Helmet>
     <section className="term_sec">
       <div>
         <h5>Introduction</h5>

@@ -121,7 +121,7 @@ const Home = () => {
   };
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
         <title>
           Book Outstation Cabs, Local Cabs For Tour's & Transfer's Inside The
@@ -136,7 +136,7 @@ const Home = () => {
           content="India's One of the Largest Intercity Car Rentals | Hire Outstation and Local AC cabs with Attractive Rates, Clean Cars, Courteous Drivers & Transparent Billing"
         />
         <link rel="canonical" href="https://revacabs.com/" />
-      </Helmet> */}
+      </Helmet>
       {loading ? (
         <Loading />
       ) : (

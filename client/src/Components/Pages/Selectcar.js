@@ -171,7 +171,7 @@ const Selectcar = () => {
   };
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
         <title>
           {servicedata.bookingtype === "local"
@@ -194,7 +194,7 @@ const Selectcar = () => {
         />
         <link rel="canonical" href="http://revacabs.com/" />
         <meta name="robots" content="noindex,nofollow" />
-      </Helmet> */}
+      </Helmet>
       <div className="schead">
         <div className="schead-ptn">
           <div className="ptn-head">Route Detail</div>

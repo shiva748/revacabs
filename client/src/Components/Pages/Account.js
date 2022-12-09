@@ -186,7 +186,7 @@ const Account = () => {
   const [emlver, setemlver] = useState({ display: false, email: "" });
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
         <title>
           {`${
@@ -210,7 +210,7 @@ const Account = () => {
         />
         <link rel="canonical" href="http://revacabs.com/" />
         <meta name="robots" content="noindex,nofollow" />
-      </Helmet> */}
+      </Helmet>
       {loading ? (
         <Loading />
       ) : (

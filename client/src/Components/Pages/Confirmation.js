@@ -30,7 +30,7 @@ const Confirmation = () => {
   };
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
         <title>
           {`${
@@ -43,7 +43,7 @@ const Confirmation = () => {
             bkngdata ? `${bkngdata.firstName} - ` : ""
           }Cab Booked successfully`}
         />
-      </Helmet> */}
+      </Helmet>
       {rendered ? (
         <section className="cnfrmtion-sec" style={{ height: hgt }}>
           <div className="cnfrmtion-con">
