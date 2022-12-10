@@ -1146,12 +1146,8 @@ exports.crt_booking = async (req, res) => {
   } else if (!["Personal", "Business"].some((itm) => itm === trprsn)) {
     return res.status(422).json("Invalid trip reason selected");
   }
-  console.log(new Date(pickupat).toLocaleDateString({timeZone: 'Asia/Kolkata'}),
-  new Date(pickupdate).toLocaleDateString({timeZone: 'Asia/Kolkata'})
-)
   if (
-    new Date(pickupat).toLocaleDateString({timeZone: 'Asia/Kolkata'})!==
-    new Date(pickupdate).toLocaleDateString({timeZone: 'Asia/Kolkata'})
+    pickupat - pickupdate > 86400000
   ) {
     return res.status(422).json("Invalid Pickup Date & Time");
   }
