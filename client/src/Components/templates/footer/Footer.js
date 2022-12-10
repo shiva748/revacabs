@@ -63,13 +63,13 @@ const Footer = () => {
               <HiMail /> info@revacabs.com
             </a>
             <div className="slinks-con">
-              <a href="/" className="s-btn">
+              <a href="https://www.facebook.com/profile.php?id=100088752843952" target="_blank" className="s-btn">
                 <img src="/icons/fb-icon.png" alt="" />
               </a>
-              <a href="/" className="s-btn">
+              <a href="https://api.whatsapp.com/send/?phone=9456878882&text=Hi+RevaCabs%2C+Whatsup&type=phone_number&app_absent=0" target="_blank" className="s-btn">
                 <img src="/icons/wa-icon.png" alt="" />
               </a>
-              <a href="/" className="s-btn">
+              <a href="https://twitter.com/RevaCabs" target="_blank" className="s-btn">
                 <img src="/icons/tw-icon.png" alt="" />
               </a>
             </div>

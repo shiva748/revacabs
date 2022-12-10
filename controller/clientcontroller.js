@@ -1087,7 +1087,7 @@ const City = require("../models/autocity");
 const uniqid = require("uniqid");
 exports.crt_booking = async (req, res) => {
   // common validation
-  const tme = new Date().getTime() + 9000000;
+  const tme = new Date().getTime() + 7200000;
   const {
     firstName,
     lastName,
