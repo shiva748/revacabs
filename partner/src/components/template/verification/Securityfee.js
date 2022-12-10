@@ -120,7 +120,7 @@ const Securityfee = (received) => {
             className={dsbl ? "opt-btn ldng-btn" : "opt-btn"}
             onClick={displayRazorpay}
           >
-            <span> Pay ₹200 Now </span>
+            <span> Pay ₹100 Now </span>
           </button>
           <div>OR</div>
           <button className="opt-btn" onClick={closer}>

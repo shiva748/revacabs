@@ -354,7 +354,7 @@ exports.create_order_SF = async (req, res) => {
       key_secret: process.env.RAZORPAY_SECRET,
     });
     const options = {
-      amount: 200 * 100, // amount in smallest currency unit
+      amount: 100 * 100, // amount in smallest currency unit
       currency: "INR",
     };
 
@@ -367,7 +367,7 @@ exports.create_order_SF = async (req, res) => {
       operatorid,
       status: "created",
       reason: "operator fee",
-      amount: 200,
+      amount: 100,
     });
     const saving = await Nord.save()
       .then((res) => {
@@ -446,7 +446,7 @@ exports.success_securityfee = async (req, res) => {
       },
       {
         "Securityfee.received": true,
-        "Securityfee.amount": 200,
+        "Securityfee.amount": 100,
       }
     )
       .then((res) => {
