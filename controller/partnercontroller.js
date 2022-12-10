@@ -39,9 +39,8 @@ exports.register_partner = async (req, res) => {
       .status(422)
       .json({ error: "password and confirm password do not match" });
   }
-  const isStrongPassword = validator.isStrongPassword(password);
-  if (!isStrongPassword) {
-    return res.status(422).json({ error: "please enter a strong password" });
+  if (password.length < 8) {
+    return res.status(422).json({ error: "Password must have 8 character's" });
   }
   const isemail = validator.isEmail(email);
   if (!isemail) {
@@ -2603,10 +2602,9 @@ exports.driver_changepass = async (req, res) => {
     return res.status(422).json("password and confirm password do not match");
   }
   if (
-    !validator.isStrongPassword(newpass) ||
-    !validator.isStrongPassword(newpass)
+    newpass.length <8
   ) {
-    return res.status(422).json("please enter strong password");
+    return res.status(422).json("Password mush have 8 character's");
   }
   const isMatch = await bcrypt.compare(oldpass, user.password);
   if (!isMatch) {
