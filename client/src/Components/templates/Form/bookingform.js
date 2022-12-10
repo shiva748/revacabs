@@ -23,7 +23,7 @@ const Bookingform = () => {
       todaydate.getMonth() === sd.getMonth() &&
       todaydate.getDate() === sd.getDate() &&
       todaydate.getFullYear() === sd.getFullYear()
-        ? todaydate.getHours() + 3
+        ? todaydate.getHours() + 4
         : 0;
     let minutes = 0;
     while (hours <= 23) {
