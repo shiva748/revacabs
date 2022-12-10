@@ -128,8 +128,8 @@ const Navbar = () => {
     if (newpass !== cnfrmpass) {
       return window.alert("password and confirm password not matching");
     }
-    if (!validator.isStrongPassword(newpass)) {
-      return window.alert("please enter Strong password");
+    if (newpass.length < 8) {
+      return window.alert("Password must have 8 character's");
     }
     setpass({ ...pass, prcs: true });
     const res = await fetch("/partner/changepassword", {

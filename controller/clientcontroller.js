@@ -23,9 +23,8 @@ exports.register_client = async (req, res) => {
       .status(422)
       .json({ error: "password and confirm password do not match" });
   }
-  const isStrongPassword = validator.isStrongPassword(password);
-  if (!isStrongPassword) {
-    return res.status(422).json({ error: "please enter a strong password" });
+  if (password.length < 8) {
+    return res.status(422).json({ error: "Password must have 8 Character's" });
   }
   const isemail = validator.isEmail(email);
   if (!isemail) {
