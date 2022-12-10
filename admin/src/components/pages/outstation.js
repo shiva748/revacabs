@@ -370,10 +370,9 @@ const Outstation = () => {
                   {lst.data.map((itm, i) => {
                     return (
                       <tr key={i}>
-                        <td name="From">
+                        <td name="Route">
                           <span
                             style={{
-                              display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                             }}
@@ -386,7 +385,7 @@ const Outstation = () => {
                         <td name="Listing">
                           {itm.list ? "Enabled" : "Disabled"}
                         </td>
-                        <td>
+                        <td name="Map">
                           <a
                             className="blu-links"
                             rel="noreferrer"

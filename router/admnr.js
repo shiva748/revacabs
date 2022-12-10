@@ -91,7 +91,7 @@ routers.put("/operator/update", verifytoken, admscont.admn_updtoprtr);
 
 // === === === updt operator === === === //
 
-routers.put("/operator/req_doc", verifytoken, admscont.oprtr_verif_req);
+routers.post("/operator/req_doc", verifytoken, admscont.oprtr_verif_req);
 
 // === === === get drvr === === === //
 

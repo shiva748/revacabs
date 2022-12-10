@@ -701,7 +701,7 @@ const Outstationdtl = (recived) => {
                                 className="fltr-input"
                                 value={add.bsfr}
                                 onChange={handelpkg}
-                                placeholder="Base fare/Km"
+                                placeholder="Base fare"
                               />
                             </td>
                           </tr>

@@ -73,6 +73,23 @@ const Oprtrdtl = (recived) => {
     }
     setprcs(false);
   };
+  const reqdoc = async()=>{
+    const result = await fetch("/oceannodes/operator/req_doc", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email
+      }),
+    });
+    const data = await result.json();
+    if (result.status === 200) {
+      alert(data)
+    } else {
+      alert(data);
+    }
+  }
   const update = async () => {
     const { basc, prfl, aadh, dl, alog, reqdoc, verified } = flt;
     if (
@@ -279,7 +296,7 @@ const Oprtrdtl = (recived) => {
                     {itm.verification.isverified
                       ? "Verified"
                       : itm.verification.request
-                      ? "Document required"
+                      ? <a onClick={reqdoc}>Document required</a>
                       : itm.approved
                       ? "Pending"
                       : "New Request"}

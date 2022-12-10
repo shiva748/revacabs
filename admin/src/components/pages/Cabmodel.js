@@ -377,9 +377,9 @@ const Cabmodel = () => {
                   {lst.data.map((itm, i) => {
                     return (
                       <tr key={i}>
-                        <td name="From">{itm.name}</td>
-                        <td>{itm.category}</td>
-                        <td name="Listing">{itm.group_id}</td>
+                        <td name="Cab Model">{itm.name}</td>
+                        <td name="Category">{itm.category}</td>
+                        <td name="Group Id">{itm.group_id}</td>
                         <td>
                           <button
                             className="ctl-btn"

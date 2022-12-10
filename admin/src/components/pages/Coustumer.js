@@ -229,7 +229,7 @@ const Coustumer = () => {
                     return (
                       <tr key={i}>
                         <td name="id">{itm.id}</td>
-                        <td name="email">
+                        <td name="Name">
                           {itm.firstName
                             .charAt(0)
                             .toUpperCase()

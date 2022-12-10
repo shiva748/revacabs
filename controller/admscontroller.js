@@ -100,13 +100,13 @@ exports.admn_login = async (req, res) => {
       ],
       from: {
         name: "Revacabs",
-        email: "info@1cyqpu.mailer91.com",
+        email: "services@1cyqpu.mailer91.com",
       },
       domain: "1cyqpu.mailer91.com",
       mail_type_id: "1",
       reply_to: [
         {
-          email: "info@1cyqpu.mailer91.com",
+          email: "contactus@1cyqpu.mailer91.com",
         },
       ],
       template_id: "Email_Verification",
@@ -1727,13 +1727,13 @@ exports.admn_updtoprtr = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "services@revacabs.com",
+          email: "services@1cyqpu.mailer91.com",
         },
-        domain: "revacabs.com",
+        domain: "1cyqpu.mailer91.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contactus@revacabs.com",
+            email: "contactus@1cyqpu.mailer91.com",
           },
         ],
         template_id: "Partner_profile_approval",
@@ -1771,7 +1771,7 @@ exports.admn_updtoprtr = async (req, res) => {
 
 exports.oprtr_verif_req = async(req, res)=>{
   const { email } = req.body;
-  if(!email || validator.isEmail(email) ){
+  if(!email || !validator.isEmail(email) ){
     return res.status(400).json("Invalid request")
   }
   let tosnd = { email  };
@@ -1790,7 +1790,10 @@ exports.oprtr_verif_req = async(req, res)=>{
     return res.status(400).json("invalid request");
   }
   if(isuser.verification.isverified){
-    return res.status("Invalid request")
+    return res.status(400).json("User is verified")
+  }
+  if(!isuser.approved){
+    return res.status("Please approve the login first")
   }
   const data = {
     to: [
@@ -1801,13 +1804,13 @@ exports.oprtr_verif_req = async(req, res)=>{
     ],
     from: {
       name: "Revacabs",
-      email: "services@revacabs.com",
+      email: "services@1cyqpu.mailer91.com",
     },
-    domain: "revacabs.com",
+    domain: "1cyqpu.mailer91.com",
     mail_type_id: "2",
     reply_to: [
       {
-        email: "contactus@revacabs.com",
+        email: "contactus@1cyqpu.mailer91.com",
       },
     ],
     template_id: "Operator_document_request",
@@ -1834,7 +1837,7 @@ exports.oprtr_verif_req = async(req, res)=>{
   if (emailreq === "block") {
     return;
   }
-  return res.status(201).json("Updated Successfully");
+  return res.status(201).json("email sent successfully");
 }
 
 // === === === listing drivers === === === //
@@ -2125,13 +2128,13 @@ exports.admn_drvrlgnaprv = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "services@revacabs.com",
+          email: "services@1cyqpu.mailer91.com",
         },
-        domain: "revacabs.com",
+        domain: "1cyqpu.mailer91.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contactus@revacabs.com",
+            email: "contactus@1cyqpu.mailer91.com",
           },
         ],
         template_id: "driver_profile_approval",
@@ -4231,7 +4234,7 @@ exports.admn_addoutpackageround = async (req, res) => {
     typeof to !== "string" ||
     typeof tocode !== "string"
   ) {
-    return res.status(400).json("invalid request");
+    return res.status(400).json("invalid request 1");
   }
   const isroute = await outstation
     .findOne({
@@ -4251,7 +4254,7 @@ exports.admn_addoutpackageround = async (req, res) => {
     return;
   }
   if (!isroute) {
-    return res.status(400).json("invalid request");
+    return res.status(400).json("invalid request 2");
   }
   let roundresults = isroute.roundresults;
   let pkg;
@@ -4264,7 +4267,7 @@ exports.admn_addoutpackageround = async (req, res) => {
     typeof eqvcab !== "string" ||
     !bools.some((itm) => itm === eqvcab)
   ) {
-    return res.status(400).json("invalid request");
+    return res.status(400).json("invalid request 3");
   }
   let tve = eqvcab === "true" ? true : false;
   if (actn === "edt") {
@@ -4279,7 +4282,7 @@ exports.admn_addoutpackageround = async (req, res) => {
       (itm) => itm.name === name && itm.equivalent.isequi === tve
     );
     if (!toedt) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 4");
     }
     pkg = {
       _id: toedt._id,
@@ -4308,7 +4311,7 @@ exports.admn_addoutpackageround = async (req, res) => {
     stts = await Stats.findOne({}, { _id: 0, package: 1 });
     const iscab = await Cabmod.findOne({ name }, { _id: 0 });
     if (!iscab) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 5");
     }
     pkg = {
       _id: `pkgh-${10001 + stts.package.count}`,
@@ -4358,13 +4361,12 @@ exports.admn_addoutpackageround = async (req, res) => {
       !driverad ||
       !adv ||
       !avil ||
-      !bsfr ||
       !sttx ||
       !sttxamt ||
       !expand ||
       !dayrates
     ) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 6");
     }
   }
   if (dayrates) {
@@ -4394,7 +4396,7 @@ exports.admn_addoutpackageround = async (req, res) => {
           isNaN(itm.bsfr)
       )
     ) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 7");
     }
     pkg = { ...pkg, dayrates };
   }
@@ -4419,7 +4421,7 @@ exports.admn_addoutpackageround = async (req, res) => {
       isNaN(expand.minchrg)||
       isNaN(expand.bsfr)
     ) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 8");
     }
     pkg = { ...pkg, expand };
   }
@@ -4434,7 +4436,7 @@ exports.admn_addoutpackageround = async (req, res) => {
   }
   if (sttxamt) {
     if (typeof sttxamt !== "string") {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 9");
     }
     pkg = {
       ...pkg,
@@ -4443,7 +4445,7 @@ exports.admn_addoutpackageround = async (req, res) => {
   }
   if (gst) {
     if (typeof gst !== "string" || !bools.some((itm) => itm === gst)) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 10");
     }
     pkg = {
       ...pkg,
@@ -4455,7 +4457,7 @@ exports.admn_addoutpackageround = async (req, res) => {
       typeof driverad !== "string" ||
       !bools.some((itm) => itm === driverad)
     ) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 11");
     }
     pkg = {
       ...pkg,
@@ -4464,7 +4466,7 @@ exports.admn_addoutpackageround = async (req, res) => {
   }
   if (adv) {
     if (typeof adv !== "string" || !bools.some((itm) => itm === adv)) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 12");
     }
     pkg = {
       ...pkg,
@@ -4473,7 +4475,7 @@ exports.admn_addoutpackageround = async (req, res) => {
   }
   if (avil) {
     if (typeof avil !== "string" || !bools.some((itm) => itm === avil)) {
-      return res.status(400).json("invalid request");
+      return res.status(400).json("invalid request 13");
     }
     pkg = {
       ...pkg,
@@ -4528,7 +4530,7 @@ exports.admn_addoutpackageround = async (req, res) => {
     }
     return res.status(201).json(pkg);
   } else {
-    return res.status(400).json("invalid request");
+    return res.status(400).json("invalid request 14");
   }
 };
 

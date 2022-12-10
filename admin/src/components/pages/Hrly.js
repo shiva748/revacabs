@@ -350,11 +350,11 @@ const Hourly = () => {
                   {lst.data.map((itm, i) => {
                     return (
                       <tr key={i}>
-                        <td name="From">{itm.from}</td>
+                        <td name="City">{itm.from}</td>
                         <td name="Listing">
                           {itm.list ? "Enabled" : "Disabled"}
                         </td>
-                        <td>
+                        <td name="Map">
                           <a
                             className="blu-links"
                             target="_blank"
