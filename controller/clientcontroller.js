@@ -33,7 +33,7 @@ exports.register_client = async (req, res) => {
       .json({ error: "please enter a valid email address" });
   }
   const isMobilePhone = validator.isMobilePhone(phone, "en-IN");
-  if (!isMobilePhone) {
+  if (!isMobilePhone || phone.length > 10) {
     return res
       .status(422)
       .json({ error: "please enter a valid 10 digit indian phone no" });

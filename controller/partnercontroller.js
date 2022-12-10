@@ -29,10 +29,10 @@ exports.register_partner = async (req, res) => {
       .status(422)
       .json({ error: "email cannot be greater then 254 characters" });
   }
-  if (phone.length > 15) {
+  if (phone.length > 10) {
     return res
       .status(422)
-      .json({ error: "phone cannot be greater then 15 characters" });
+      .json({ error: "please enter a valid 10 digit phone no" });
   }
   if (password !== cPassword) {
     return res
@@ -461,8 +461,8 @@ exports.partner_verify = async (req, res) => {
     if (!firstName.match(pattern) || !lastName.match(pattern)) {
       return res.status(422).json("Please enter valid name");
     }
-    if (!validator.isMobilePhone(aPhone)) {
-      return res.status(422).json("Please enter valid Phone");
+    if (!validator.isMobilePhone(aPhone) || aPhone.length > 10) {
+      return res.status(422).json("Please enter valid 10 digit Phone no");
     }
     const minbd = new Date(
       new Date().setFullYear(new Date().getFullYear() - 18)
@@ -848,7 +848,8 @@ exports.partner_addriver = async (req, res) => {
   }
   if (
     !validator.isMobilePhone(aPhone, "en-IN") ||
-    !validator.isMobilePhone(phone, "en-IN")
+    !validator.isMobilePhone(phone, "en-IN") ||
+    aPhone.length > 10
   ) {
     return res.status(400).json("Please enter a valid Phone Number");
   } else if (aPhone === user.phone) {
@@ -1237,9 +1238,9 @@ exports.partner_updatedriver = async (req, res) => {
       }
       if (typeof data.email !== "string" || !validator.isEmail(email)) {
         return res.status(400).json("invalid email");
-      } else if (validator.isMobilePhone(data.phone, "en_IN")) {
+      } else if (validator.isMobilePhone(data.phone, "en_IN")|| data.phone.length > 10) {
         return res.status(400).json("invalid phone number");
-      } else if (validator.isMobilePhone(data.aPhone, "en-IN")) {
+      } else if (validator.isMobilePhone(data.aPhone, "en-IN")|| data.aPhone.length >10) {
         return res.status(400).json("invalid Alternate Phone number");
       }
       let regex = new RegExp(["^", email, "$"].join(""), "i");
@@ -3450,7 +3451,7 @@ exports.forgot_pass = async (req, res) => {
       .status(422)
       .json({ error: "please enter a valid email address" });
   }
-  if (!validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
     return res.status(422).json({ error: "please enter a valid Phone number" });
   }
   let regex = new RegExp(["^", email, "$"].join(""), "i");
@@ -3704,6 +3705,7 @@ exports.resendotp = async (req, res) => {
   } else if (
     !validator.isEmail(email) ||
     !validator.isMobilePhone(phone, "en-IN") ||
+    phone.length > 10||
     rsn !== "forgotpass"
   ) {
     return res.status(400).json({ error: "invalid request" });
@@ -3895,7 +3897,7 @@ exports.driver_forgot_pass = async (req, res) => {
       .status(422)
       .json({ error: "please enter a valid email address" });
   }
-  if (!validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
     return res.status(422).json({ error: "please enter a valid Phone number" });
   }
   let regex = new RegExp(["^", email, "$"].join(""), "i");
@@ -4030,7 +4032,7 @@ exports.driver_reset_pass = async (req, res) => {
   ) {
     return res.status(400).json("invalid data type");
   }
-  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
     return res.status(400).json("Invalid request");
   }
   if (password !== cPassword) {
@@ -4139,7 +4141,8 @@ exports.driver_resendotp = async (req, res) => {
     typeof phone !== "string" ||
     typeof rsn !== "string" ||
     !validator.isEmail(email) ||
-    !validator.isMobilePhone(phone, "en-IN")
+    !validator.isMobilePhone(phone, "en-IN")||
+    phone.length > 10
   ) {
     return res.status(400).json("Invalid request");
   }
