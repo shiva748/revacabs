@@ -1146,13 +1146,13 @@ exports.crt_booking = async (req, res) => {
   } else if (!["Personal", "Business"].some((itm) => itm === trprsn)) {
     return res.status(422).json("Invalid trip reason selected");
   }
-  console.log(new Date(pickupat).toDateString('en-IN') !==
-  new Date(pickupdate).toDateString('en-IN'))
-  console.log(new Date(pickupat).toDateString('en-IN'),
-  new Date(pickupdate).toDateString('en-IN'))
+  console.log(new Date(pickupat+ 19800000).toLocaleDateString('en-IN') !==
+  new Date(pickupdate).toLocaleDateString('en-IN'))
+  console.log(new Date(pickupat+19800000).toLocaleDateString('en-IN'),
+  new Date(pickupdate).toLocaleDateString('en-IN'))
   if (
-    new Date(pickupat).toDateString('en-IN') !==
-    new Date(pickupdate).toDateString('en-IN')
+    new Date(pickupat+19800000).toLocaleDateString('en-IN') !==
+    new Date(pickupdate).toLocaleDateString('en-IN')
   ) {
     return res.status(422).json("Invalid Pickup Date & Time");
   }
