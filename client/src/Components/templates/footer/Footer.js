@@ -44,9 +44,6 @@ const Footer = () => {
               <NavLink to="/privacy-policy" className="ftr-link">
               Privacy-Policy
               </NavLink>
-              <NavLink to="/contactus" className="ftr-link">
-                Sitemap
-              </NavLink>
             </div>
           </div>
           <div className="tp-rptn">
