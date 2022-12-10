@@ -1146,6 +1146,10 @@ exports.crt_booking = async (req, res) => {
   } else if (!["Personal", "Business"].some((itm) => itm === trprsn)) {
     return res.status(422).json("Invalid trip reason selected");
   }
+  console.log(new Date(pickupat).toLocaleDateString() !==
+  new Date(pickupdate).toLocaleDateString())
+  console.log(new Date(pickupat).toLocaleDateString(),
+  new Date(pickupdate).toLocaleDateString())
   if (
     new Date(pickupat).toLocaleDateString() !==
     new Date(pickupdate).toLocaleDateString()
