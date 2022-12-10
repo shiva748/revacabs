@@ -42,6 +42,9 @@ const Account = () => {
   const handeledt = (e) => {
     name = e.target.name;
     value = e.target.value;
+    if(name === "aPhone" && value.length > 10){
+      return
+    }
     setedt({ ...edt, [name]: value });
   };
   const [loading, setloading] = useState(true);

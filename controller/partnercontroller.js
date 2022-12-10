@@ -49,7 +49,7 @@ exports.register_partner = async (req, res) => {
       .json({ error: "please enter a valid email address" });
   }
   const isMobilePhone = validator.isMobilePhone(phone, "en-IN");
-  if (!isMobilePhone) {
+  if (!isMobilePhone || phone.length > 10) {
     return res
       .status(422)
       .json({ error: "please enter a valid 10 digit indian phone no" });
@@ -3590,7 +3590,7 @@ exports.reset_pass = async (req, res) => {
   ) {
     return res.status(400).json("invalid data type");
   }
-  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
     return res.status(400).json("Invalid request");
   }
   if (password !== cPassword) {

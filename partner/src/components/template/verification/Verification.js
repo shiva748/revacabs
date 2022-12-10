@@ -172,7 +172,7 @@ const Verification = (recived) => {
   const handelfrm = (e) => {
     name = e.target.name;
     value = e.target.value;
-    if(name.length > 10){
+    if(name === "aPhone" && value.length > 10){
       return
     }
     setfrmdata({ ...frmdata, [name]: value });

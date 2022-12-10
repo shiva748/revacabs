@@ -448,7 +448,7 @@ exports.forgot_pass = async (req, res) => {
       .status(422)
       .json({ error: "please enter a valid email address" });
   }
-  if (!validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isMobilePhone(phone, "en-IN") || phone.length>10) {
     return res.status(422).json({ error: "please enter a valid Phone number" });
   }
   let regex = new RegExp(["^", email, "$"].join(""), "i");
@@ -1140,7 +1140,7 @@ exports.crt_booking = async (req, res) => {
     return res.status(422).json("Invalid time");
   } else if (!validator.isEmail(email)) {
     return res.status(422).json("Invalid email");
-  } else if (!validator.isMobilePhone(phone)) {
+  } else if (!validator.isMobilePhone(phone)|| phone.length > 10) {
     return res.status(422).json("Invalid phone");
   } else if (!["Personal", "Business"].some((itm) => itm === trprsn)) {
     return res.status(422).json("Invalid trip reason selected");
@@ -1749,7 +1749,7 @@ exports.crt_tourinqu = async (req, res) => {
   ) {
     return res.status(400).json("invalid request");
   }
-  if (!validator.isMobilePhone(phone, "en-IN")) {
+  if (!validator.isMobilePhone(phone, "en-IN")|| phone.length > 10) {
     return res.status(400).json("Invalid request");
   }
   if (!validator.isEmail(email)) {
@@ -2620,14 +2620,14 @@ exports.updateprofile = async (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
   const isMobilePhone = validator.isMobilePhone(phone, "en-IN");
-  if (!isMobilePhone) {
+  if (!isMobilePhone || phone.length > 10) {
     return res
       .status(422)
       .json({ error: "please enter a valid 10 digit indian phone no" });
   }
   if (aPhone.length > 0) {
     const isMobileaPhone = validator.isMobilePhone(aPhone, "en-IN");
-    if (!isMobileaPhone) {
+    if (!isMobileaPhone || aPhone.length > 10) {
       return res
         .status(422)
         .json({ error: "please enter a valid 10 digit indian phone no" });
@@ -2867,7 +2867,7 @@ exports.createotp = async (req, res) => {
   }
   if (!validator.isEmail(email)) {
     return res.status(400).json("invalid email");
-  } else if (!validator.isMobilePhone(phone, "en-IN")) {
+  } else if (!validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
     return res.status(400).json("invalid phone");
   } else if (!["forgotpass", "verification"].some((itm) => itm === rsn)) {
     return res.status(400).json("invalid reason");

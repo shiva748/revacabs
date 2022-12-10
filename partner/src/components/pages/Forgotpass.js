@@ -68,6 +68,9 @@ const Forgotpass = () => {
   const handelinputr = (e) => {
     name = e.target.name;
     value = e.target.value;
+    if(name === "phone" && phone.length > 10){
+      return
+    }
     setrstd({ ...rstd, [name]: value });
   };
 

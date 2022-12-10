@@ -52,7 +52,7 @@ const Partnersig = () => {
   const handelinput = (e) => {
     name = e.target.name;
     value = e.target.value;
-    if(name === "phone" || value.length > 10){
+    if(name === "phone" && value.length > 10){
       return
     }
     setrdata({ ...rdata, [name]: value });

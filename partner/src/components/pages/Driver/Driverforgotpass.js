@@ -77,6 +77,9 @@ const Driverforgotpass = () => {
   const handelinputr = (e) => {
     name = e.target.name;
     value = e.target.value;
+    if(name === "phone" && value.length > 10){
+      return
+    }
     setrstd({ ...rstd, [name]: value });
   };
 
