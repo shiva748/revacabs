@@ -1727,13 +1727,13 @@ exports.admn_updtoprtr = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "service@1cyqpu.mailer91.com",
+          email: "services@revacabs.com",
         },
-        domain: "1cyqpu.mailer91.com",
+        domain: "revacabs.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contact@1cyqpu.mailer91.com",
+            email: "contactus@revacabs.com",
           },
         ],
         template_id: "Partner_profile_approval",
@@ -1768,6 +1768,74 @@ exports.admn_updtoprtr = async (req, res) => {
     return res.status(400).json("invalid request");
   }
 };
+
+exports.oprtr_verif_req = async(req, res)=>{
+  const { email } = req.body;
+  if(!email || validator.isEmail(email) ){
+    return res.status(400).json("Invalid request")
+  }
+  let tosnd = { email  };
+  const isuser = await Partner.findOne(tosnd)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      res.status(500).json("failed to fetch data");
+      return "block";
+    });
+  if (isuser === "block") {
+    return;
+  }
+  if (!isuser) {
+    return res.status(400).json("invalid request");
+  }
+  if(isuser.verification.isverified){
+    return res.status("Invalid request")
+  }
+  const data = {
+    to: [
+      {
+        name: isuser.firstName,
+        email: isuser.email,
+      },
+    ],
+    from: {
+      name: "Revacabs",
+      email: "services@revacabs.com",
+    },
+    domain: "revacabs.com",
+    mail_type_id: "2",
+    reply_to: [
+      {
+        email: "contactus@revacabs.com",
+      },
+    ],
+    template_id: "Operator_document_request",
+    variables: {
+      NAME: isuser.firstName,
+    },
+  };
+  const customConfig = {
+    headers: {
+      "Content-Type": "application/JSON",
+      Accept: "application/json",
+      authkey: process.env.MSG91AUTH,
+    },
+  };
+  const emailreq = await axios
+    .post("https://api.msg91.com/api/v5/email/send", data, customConfig)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      res.status(500).json("failed to fetch data");
+      return "block";
+    });
+  if (emailreq === "block") {
+    return;
+  }
+  return res.status(201).json("Updated Successfully");
+}
 
 // === === === listing drivers === === === //
 
@@ -2057,13 +2125,13 @@ exports.admn_drvrlgnaprv = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "service@1cyqpu.mailer91.com",
+          email: "services@revacabs.com",
         },
-        domain: "1cyqpu.mailer91.com",
+        domain: "revacabs.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contact@1cyqpu.mailer91.com",
+            email: "contactus@revacabs.com",
           },
         ],
         template_id: "driver_profile_approval",

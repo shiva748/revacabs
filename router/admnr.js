@@ -89,6 +89,10 @@ routers.get(
 
 routers.put("/operator/update", verifytoken, admscont.admn_updtoprtr);
 
+// === === === updt operator === === === //
+
+routers.put("/operator/req_doc", verifytoken, admscont.oprtr_verif_req);
+
 // === === === get drvr === === === //
 
 routers.post("/operator/driver", verifytoken, admscont.admn_driver);
