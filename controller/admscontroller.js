@@ -100,13 +100,13 @@ exports.admn_login = async (req, res) => {
       ],
       from: {
         name: "Revacabs",
-        email: "services@1cyqpu.mailer91.com",
+        email: "services@revacabs.com",
       },
-      domain: "1cyqpu.mailer91.com",
+      domain: "revacabs.com",
       mail_type_id: "1",
       reply_to: [
         {
-          email: "contactus@1cyqpu.mailer91.com",
+          email: "contactus@revacabs.com",
         },
       ],
       template_id: "Email_Verification",
@@ -1727,13 +1727,13 @@ exports.admn_updtoprtr = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "services@1cyqpu.mailer91.com",
+          email: "services@revacabs.com",
         },
-        domain: "1cyqpu.mailer91.com",
+        domain: "revacabs.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contactus@1cyqpu.mailer91.com",
+            email: "contactus@revacabs.com",
           },
         ],
         template_id: "Partner_profile_approval",
@@ -1804,13 +1804,13 @@ exports.oprtr_verif_req = async(req, res)=>{
     ],
     from: {
       name: "Revacabs",
-      email: "services@1cyqpu.mailer91.com",
+      email: "services@revacabs.com",
     },
-    domain: "1cyqpu.mailer91.com",
+    domain: "revacabs.com",
     mail_type_id: "2",
     reply_to: [
       {
-        email: "contactus@1cyqpu.mailer91.com",
+        email: "contactus@revacabs.com",
       },
     ],
     template_id: "Operator_document_request",
@@ -2128,13 +2128,13 @@ exports.admn_drvrlgnaprv = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "services@1cyqpu.mailer91.com",
+          email: "services@revacabs.com",
         },
-        domain: "1cyqpu.mailer91.com",
+        domain: "revacabs.com",
         mail_type_id: "2",
         reply_to: [
           {
-            email: "contactus@1cyqpu.mailer91.com",
+            email: "contactus@revacabs.com",
           },
         ],
         template_id: "driver_profile_approval",

@@ -2213,13 +2213,13 @@ exports.cancel_bookreq = async (req, res) => {
         ],
         from: {
           name: "Revacabs",
-          email: "info@1cyqpu.mailer91.com",
+          email: "info@revacabs.com",
         },
-        domain: "1cyqpu.mailer91.com",
+        domain: "revacabs.com",
         mail_type_id: "1",
         reply_to: [
           {
-            email: "info@1cyqpu.mailer91.com",
+            email: "info@revacabs.com",
           },
         ],
         template_id: "operator_cancel_notify",
@@ -2245,13 +2245,13 @@ exports.cancel_bookreq = async (req, res) => {
       ],
       from: {
         name: "Revacabs",
-        email: "info@1cyqpu.mailer91.com",
+        email: "info@revacabs.com",
       },
-      domain: "1cyqpu.mailer91.com",
+      domain: "revacabs.com",
       mail_type_id: "1",
       reply_to: [
         {
-          email: "info@1cyqpu.mailer91.com",
+          email: "info@revacabs.com",
         },
       ],
       template_id: "client_booking_cancel",
@@ -3256,13 +3256,13 @@ exports.email_verification = async (req, res) => {
     ],
     from: {
       name: "Revacabs",
-      email: "info@1cyqpu.mailer91.com",
+      email: "info@revacabs.com",
     },
-    domain: "1cyqpu.mailer91.com",
+    domain: "revacabs.com",
     mail_type_id: "1",
     reply_to: [
       {
-        email: "info@1cyqpu.mailer91.com",
+        email: "info@revacabs.com",
       },
     ],
     template_id: "Email_Verification",
