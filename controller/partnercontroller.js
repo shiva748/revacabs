@@ -93,8 +93,8 @@ exports.register_partner = async (req, res) => {
       password,
       cPassword,
       termCondition: "accepted",
-      approved: false,
-      "verification.request": false,
+      approved: true,
+      "verification.request": true,
       "verification.isverified": false,
       faultin: { basc: true, prfl: true, dl: true, aadh: true },
       Date: new Date().getTime(),
@@ -116,7 +116,7 @@ exports.register_partner = async (req, res) => {
     }
     if (result) {
       return res.status(201).json({
-        message: "Our Executive will reach you under 24 working hour",
+        message: "Registration successfull",
       });
     } else {
       return res.status(422).json({ error: "register unsuccessful" });

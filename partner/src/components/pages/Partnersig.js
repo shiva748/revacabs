@@ -237,12 +237,16 @@ const Partnersig = () => {
     } else {
       setrdata(dr);
       setldngst(false);
-      return setalert({
+      setalert({
         display: true,
         title: "",
         message: `${data.message}`,
         type: "green",
       });
+      setTimeout(() => {
+        history.push("/login")
+      }, 2000);
+      return
     }
   };
 
@@ -442,11 +446,11 @@ const Partnersig = () => {
             </div>
             <div className="stp-row">
               <FaCaretRight />
-              <span>You will receive a call within 24 working hours</span>
+              <span>After successfull registration login using your credentials</span>
             </div>
             <div className="stp-row">
               <FaCaretRight />
-              <span>Once your login has been approved.</span>
+              <span>after login submit some basic document's for verification</span>
             </div>
             <div className="stp-row">
               <FaCaretRight />

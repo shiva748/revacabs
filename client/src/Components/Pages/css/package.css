@@ -119,7 +119,7 @@
   .trcrd-con{
     display: flex;
     flex-wrap: wrap;
-    min-height: calc(100vh - 146px);
+    /* min-height: calc(100vh - 146px); */
   }
   .marg{
     margin: 10px calc((100% - 1080px)/6) !important;
