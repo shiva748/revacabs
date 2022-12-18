@@ -464,7 +464,7 @@ exports.login_partner = async (req, res) => {
             message: "143480",
             variables_values: `${otp}|`,
             flash: 0,
-            numbers: `${phone}`,
+            numbers: `${user.phone}`,
           });
           let customConfig = {
             headers: {
