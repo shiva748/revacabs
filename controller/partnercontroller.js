@@ -101,6 +101,7 @@ exports.register_partner = async (req, res) => {
       Securityfee: {
         received: false,
       },
+      phonever: false,
     });
     const result = await user
       .save()
@@ -115,14 +116,239 @@ exports.register_partner = async (req, res) => {
       return;
     }
     if (result) {
-      return res.status(201).json({
-        message: "Registration successfull",
+      function generateOTP() {
+        var digits = "0123456789";
+        let OTP = "";
+        for (let i = 0; i < 6; i++) {
+          OTP += digits[Math.floor(Math.random() * 10)];
+        }
+        return OTP;
+      }
+      const otp = generateOTP();
+
+      const date = new Date().getTime();
+
+      const otpreq = new Otp({
+        email,
+        phone,
+        code: otp,
+        expiry: date + 300 * 1000,
+        type: "verification",
+        createdon: date,
+        for: "partner",
+        resend: {
+          on: new Date().getTime(),
+          count: 0,
+        },
+        senton: "phone",
+        attempt:0
       });
+      const delotp = await Otp.deleteMany({
+        email: email,
+        phone: phone,
+        for: "partner",
+        senton: "phone",
+        type: "verification",
+      })
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (delotp === "block") {
+        return;
+      }
+      const sresult = await otpreq
+        .save()
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (sresult === "block") {
+        return;
+      }
+      if (!sresult) {
+        return res.status(500).JSON({
+          error: "Failed to send otp please try again to login after some time",
+        });
+      }
+      const txtdata = JSON.stringify({
+        route: "dlt",
+        sender_id: "MTRACB",
+        message: "143480",
+        variables_values: `${otp}|`,
+        flash: 0,
+        numbers: `${phone}`,
+      });
+      let customConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: process.env.FAST2SMSAUTH,
+        },
+      };
+      const txtotp = await axios
+        .post("https://www.fast2sms.com/dev/bulkV2", txtdata, customConfig)
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (txtotp === "block") {
+        return;
+      }
+      if (txtotp.data.return) {
+        return res.status(201).json({
+          message: "an otp has been sent to your phone number",
+          details: { email, phone },
+        });
+      } else {
+        return res.status(500).json({
+          error: "Failed to send otp please try again to login after some time",
+        });
+      }
     } else {
       return res.status(422).json({ error: "register unsuccessful" });
     }
   } catch (err) {
     console.log(err);
+  }
+};
+
+// ==== ==== ==== verify reg otp ==== ==== ==== //
+
+exports.ver_reg_otp = async (req, res) => {
+  const { email, phone, code } = req.body;
+  if (!email || !phone || !code) {
+    return res.status(422).json({ error: "please fill all the fields" });
+  }
+  if (
+    typeof email !== "string" ||
+    typeof phone !== "string" ||
+    typeof code !== "string"
+  ) {
+    return res.status(400).json("invalid data type");
+  }
+  if (
+    !validator.isEmail(email) ||
+    !validator.isMobilePhone(phone, "en-IN") ||
+    phone.length > 10
+  ) {
+    return res.status(400).json("Invalid request");
+  }
+  if (code.length !== 6) {
+    return res.status(422).json({ error: "Otp length should be 6 " });
+  }
+  let regex = new RegExp(["^", email, "$"].join(""), "i");
+  const isotp = await Otp.findOne({
+    email: regex,
+    phone: phone,
+    for: "partner",
+    senton: "phone",
+    type: "verification",
+  })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      res.status(500).json("failed to fetch data");
+      return "block";
+    });
+  if (isotp === "block") {
+    return;
+  }
+  if (isotp) {
+    if(isotp.attempt >= 5){
+      return res.status(400).json("Maximum request attempted")
+    }
+    if (code !== isotp.code) {
+      res.status(400).json("Invalid otp");
+      const upotp = await Otp.updateOne(
+        {
+          email: regex,
+          phone: phone,
+          for: "partner",
+          senton: "phone",
+          type: "verification",
+        },
+        { attempt: isotp.attempt + 1 }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+        return
+    }
+    if (isotp.expiry > new Date().getTime()) {
+      const delotp = await Otp.deleteMany({
+        email: email,
+        phone: phone,
+        for: "partner",
+        senton: "phone",
+        type: "verification",
+      })
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (delotp === "block") {
+        return;
+      }
+      const update = await Partner.updateOne(
+        { email: regex },
+        { phonever: true }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (update === "block") {
+        return;
+      }
+      if (update.modifiedCount > 0) {
+        return res.status(200).json({ message: "Verification successfull" });
+      } else {
+        return res.status(422).json({
+          error: "Can't proceed your request please try again later",
+        });
+      }
+    } else {
+      const delotp = await Otp.deleteMany({
+        email: email,
+        phone,
+        for: "partner",
+        type: "verification",
+        senton: "phone",
+      })
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (delotp === "block") {
+        return;
+      }
+      return res.status(400).json({ error: "Otp expired" });
+    }
+  } else {
+    return res.status(422).json({ error: "invalid otp" });
   }
 };
 
@@ -170,6 +396,107 @@ exports.login_partner = async (req, res) => {
     } else {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
+        if (!user.phonever) {
+          function generateOTP() {
+            var digits = "0123456789";
+            let OTP = "";
+            for (let i = 0; i < 6; i++) {
+              OTP += digits[Math.floor(Math.random() * 10)];
+            }
+            return OTP;
+          }
+          const otp = generateOTP();
+
+          const date = new Date().getTime();
+          const otpreq = new Otp({
+            email: user.email,
+            phone: user.phone,
+            code: otp,
+            expiry: date + 300 * 1000,
+            type: "verification",
+            createdon: date,
+            for: "partner",
+            resend: {
+              on: new Date().getTime(),
+              count: 0,
+            },
+            senton: "phone",
+            attempt:0
+          });
+          const delotp = await Otp.deleteMany({
+            email: user.email,
+            phone: user.phone,
+            for: "partner",
+            senton: "phone",
+            type: "verification",
+          })
+            .then((res) => {
+              return res;
+            })
+            .catch((error) => {
+              res.status(500).json("failed to fetch data");
+              return "block";
+            });
+          if (delotp === "block") {
+            return;
+          }
+          const sresult = await otpreq
+            .save()
+            .then((res) => {
+              return res;
+            })
+            .catch((error) => {
+              res.status(500).json("failed to fetch data");
+              return "block";
+            });
+          if (sresult === "block") {
+            return;
+          }
+          if (!sresult) {
+            return res.status(500).JSON({
+              error:
+                "Failed to send otp please try again to login after some time",
+            });
+          }
+          const txtdata = JSON.stringify({
+            route: "dlt",
+            sender_id: "MTRACB",
+            message: "143480",
+            variables_values: `${otp}|`,
+            flash: 0,
+            numbers: `${phone}`,
+          });
+          let customConfig = {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: process.env.FAST2SMSAUTH,
+            },
+          };
+          const txtotp = await axios
+            .post("https://www.fast2sms.com/dev/bulkV2", txtdata, customConfig)
+            .then((res) => {
+              return res;
+            })
+            .catch((error) => {
+              res.status(500).json("failed to fetch data");
+              return "block";
+            });
+          if (txtotp === "block") {
+            return;
+          }
+          if (txtotp.data.return) {
+            return res.status(200).json({
+              result: true,
+              pvr: true,
+              message: `an otp has been sent to ${user.phone}`,
+              details: { email: user.email, phone: user.phone },
+            });
+          } else {
+            return res.status(500).json({
+              error: "Failed to send otp please try again to login after some time",
+            });
+          }
+        }
         if (user.approved) {
           const token = await user
             .genrateAuthToken()
@@ -191,6 +518,7 @@ exports.login_partner = async (req, res) => {
             .status(200)
             .json({
               result: true,
+              pvr: false,
               message: "login successful",
             });
         } else {
@@ -997,7 +1325,7 @@ exports.partner_addriver = async (req, res) => {
     Credentials: false,
     operatedby: user.operatorid,
     approved: false,
-    status:"Active",
+    status: "Active",
     faultin: { basc: false, prfl: false, aadh: false, dl: false },
   });
   const result = await nwdriver
@@ -1238,9 +1566,15 @@ exports.partner_updatedriver = async (req, res) => {
       }
       if (typeof data.email !== "string" || !validator.isEmail(email)) {
         return res.status(400).json("invalid email");
-      } else if (validator.isMobilePhone(data.phone, "en_IN")|| data.phone.length > 10) {
+      } else if (
+        validator.isMobilePhone(data.phone, "en_IN") ||
+        data.phone.length > 10
+      ) {
         return res.status(400).json("invalid phone number");
-      } else if (validator.isMobilePhone(data.aPhone, "en-IN")|| data.aPhone.length >10) {
+      } else if (
+        validator.isMobilePhone(data.aPhone, "en-IN") ||
+        data.aPhone.length > 10
+      ) {
         return res.status(400).json("invalid Alternate Phone number");
       }
       let regex = new RegExp(["^", email, "$"].join(""), "i");
@@ -1556,7 +1890,7 @@ exports.partner_addcar = async (req, res) => {
     },
     permitLink: permitupload.name,
     operatedby: user.operatorid,
-    status:"Active",
+    status: "Active",
     faultin: {
       car: false,
       rc: false,
@@ -2213,8 +2547,8 @@ exports.partner_triplog = async (req, res) => {
           "tripinfo._id": 0,
           bids: 0,
           _id: 0,
-          gst:0,
-          email:0
+          gst: 0,
+          email: 0,
         }
       : {
           orderid: 0,
@@ -2227,8 +2561,8 @@ exports.partner_triplog = async (req, res) => {
           "tripinfo._id": 0,
           bids: 0,
           _id: 0,
-          gst:0,
-          email:0
+          gst: 0,
+          email: 0,
         }
   )
     .then((res) => {
@@ -2244,39 +2578,45 @@ exports.partner_triplog = async (req, res) => {
   let date = new Date().getTime();
 
   if (log) {
-    let filtered=[];
+    let filtered = [];
     if (type !== "History") {
       log.map((itm) => {
-        if (itm.pickupat - date >= 86400000 ) {
+        if (itm.pickupat - date >= 86400000) {
           filtered.push({
-            sourcecity:{from:itm.sourcecity.from, fromcode:itm.sourcecity.fromcode},
+            sourcecity: {
+              from: itm.sourcecity.from,
+              fromcode: itm.sourcecity.fromcode,
+            },
             endcity: itm.endcity,
-            close:itm.close,
-            billing:itm.billing,
+            close: itm.close,
+            billing: itm.billing,
             otp: itm.otp,
-            bookingid:itm.bookingid,
-            bookingtype:itm.bookingtype,
-            outstation:itm.outstation,
-            pickupat:itm.pickupat,
-            pickupdate:itm.pickupdate,
-            bookingstatus:itm.bookingstatus,
-            status:itm.status,
-            tripinfo:itm.tripinfo,
-            tripreason:itm.tripreason,
+            bookingid: itm.bookingid,
+            bookingtype: itm.bookingtype,
+            outstation: itm.outstation,
+            pickupat: itm.pickupat,
+            pickupdate: itm.pickupdate,
+            bookingstatus: itm.bookingstatus,
+            status: itm.status,
+            tripinfo: itm.tripinfo,
+            tripreason: itm.tripreason,
             payable: itm.payable,
-            oprtramt:itm.oprtramt,
-            advance:itm.advance,
-            remaning:itm.remaning,
-            assignedto:itm.assignedto,
-            cabinfo:itm.cabinfo,
-            driverinfo:itm.driverinfo
+            oprtramt: itm.oprtramt,
+            advance: itm.advance,
+            remaning: itm.remaning,
+            assignedto: itm.assignedto,
+            cabinfo: itm.cabinfo,
+            driverinfo: itm.driverinfo,
           });
-        }else{
-          filtered.push(itm)
+        } else {
+          filtered.push(itm);
         }
       });
     }
-    return res.json({ result: "success", ary: type === "History"?log:filtered });
+    return res.json({
+      result: "success",
+      ary: type === "History" ? log : filtered,
+    });
   } else {
     return res.status(400).json("failed to load");
   }
@@ -2602,9 +2942,7 @@ exports.driver_changepass = async (req, res) => {
   if (newpass !== cnfrmpass) {
     return res.status(422).json("password and confirm password do not match");
   }
-  if (
-    newpass.length <8
-  ) {
+  if (newpass.length < 8) {
     return res.status(422).json("Password mush have 8 character's");
   }
   const isMatch = await bcrypt.compare(oldpass, user.password);
@@ -2735,7 +3073,7 @@ exports.driver_triplog = async (req, res) => {
           "tripinfo._id": 0,
           bids: 0,
           _id: 0,
-          email:0
+          email: 0,
         }
       : {
           orderid: 0,
@@ -2761,40 +3099,46 @@ exports.driver_triplog = async (req, res) => {
     return;
   }
   if (log) {
-    let filtered=[];
+    let filtered = [];
     if (type !== "History") {
-      let date = new Date().getTime()
+      let date = new Date().getTime();
       log.map((itm) => {
-        if (itm.pickupat - date >= 86400000 ) {
+        if (itm.pickupat - date >= 86400000) {
           filtered.push({
-            sourcecity:{from:itm.sourcecity.from, fromcode:itm.sourcecity.fromcode},
+            sourcecity: {
+              from: itm.sourcecity.from,
+              fromcode: itm.sourcecity.fromcode,
+            },
             endcity: itm.endcity,
-            close:itm.close,
-            billing:itm.billing,
+            close: itm.close,
+            billing: itm.billing,
             otp: itm.otp,
-            bookingid:itm.bookingid,
-            bookingtype:itm.bookingtype,
-            outstation:itm.outstation,
-            pickupat:itm.pickupat,
-            pickupdate:itm.pickupdate,
-            bookingstatus:itm.bookingstatus,
-            status:itm.status,
-            tripinfo:itm.tripinfo,
-            tripreason:itm.tripreason,
+            bookingid: itm.bookingid,
+            bookingtype: itm.bookingtype,
+            outstation: itm.outstation,
+            pickupat: itm.pickupat,
+            pickupdate: itm.pickupdate,
+            bookingstatus: itm.bookingstatus,
+            status: itm.status,
+            tripinfo: itm.tripinfo,
+            tripreason: itm.tripreason,
             payable: itm.payable,
-            oprtramt:itm.oprtramt,
-            advance:itm.advance,
-            remaning:itm.remaning,
-            assignedto:itm.assignedto,
-            cabinfo:itm.cabinfo,
-            driverinfo:itm.driverinfo
+            oprtramt: itm.oprtramt,
+            advance: itm.advance,
+            remaning: itm.remaning,
+            assignedto: itm.assignedto,
+            cabinfo: itm.cabinfo,
+            driverinfo: itm.driverinfo,
           });
-        }else{
-          filtered.push(itm)
+        } else {
+          filtered.push(itm);
         }
       });
     }
-    return res.json({ result: "success", ary: type === "History"?log:filtered});
+    return res.json({
+      result: "success",
+      ary: type === "History" ? log : filtered,
+    });
   } else {
     return res.status(400).json("failed to load");
   }
@@ -3374,34 +3718,33 @@ exports.driver_verandtrip = async (req, res) => {
       res.status(400).json("failed to update the booking");
     } else {
       const stat = await Stats.findOne({}, { booking: 1, _id: 0 })
-          .then((res) => {
-            return res;
-          })
-          .catch((error) => {
-            res.status(500).json("failed to fetch data");
-            return "block";
-          });
-        if (stat === "block") {
-          return;
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (stat === "block") {
+        return;
+      }
+      const statup = await Stats.updateOne(
+        {},
+        {
+          "booking.pending": stat.booking.pending - 1,
+          "booking.completed": stat.booking.completed + 1,
         }
-        const statup = await Stats.updateOne(
-          {},
-          {
-            
-            "booking.pending": stat.booking.pending - 1,
-            "booking.completed":stat.booking.completed + 1
-          }
-        )
-          .then((res) => {
-            return res;
-          })
-          .catch((error) => {
-            res.status(500).json("failed to fetch data");
-            return "block";
-          });
-        if (statup === "block") {
-          return;
-        }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+      if (statup === "block") {
+        return;
+      }
       res.status(201).json({
         res: true,
         cash,
@@ -3513,6 +3856,7 @@ exports.forgot_pass = async (req, res) => {
         count: 0,
       },
       senton: "phone",
+      attempt:0
     });
     const sresult = await otpreq
       .save()
@@ -3590,7 +3934,11 @@ exports.reset_pass = async (req, res) => {
   ) {
     return res.status(400).json("invalid data type");
   }
-  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
+  if (
+    !validator.isEmail(email) ||
+    !validator.isMobilePhone(phone, "en-IN") ||
+    phone.length > 10
+  ) {
     return res.status(400).json("Invalid request");
   }
   if (password !== cPassword) {
@@ -3626,6 +3974,30 @@ exports.reset_pass = async (req, res) => {
     return;
   }
   if (isotp) {
+    if(isotp.attempt >= 5){
+      return res.status(400).json("Maximum request attempted")
+    }
+    if (code !== isotp.code) {
+      res.status(400).json("Invalid otp");
+      const upotp = await Otp.updateOne(
+        {
+          email: regex,
+          phone: phone,
+          for: "partner",
+          senton: "phone",
+          type: "forgotpass",
+        },
+        { attempt: isotp.attempt + 1 }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+        return
+    }
     if (isotp.expiry > new Date().getTime()) {
       const delotp = await Otp.deleteMany({
         email: email,
@@ -3705,8 +4077,8 @@ exports.resendotp = async (req, res) => {
   } else if (
     !validator.isEmail(email) ||
     !validator.isMobilePhone(phone, "en-IN") ||
-    phone.length > 10||
-    rsn !== "forgotpass"
+    phone.length > 10 ||
+    !["forgotpass", "verification"].some((itm) => itm === rsn)
   ) {
     return res.status(400).json({ error: "invalid request" });
   }
@@ -3755,6 +4127,9 @@ exports.resendotp = async (req, res) => {
     return;
   }
   if (isOtp) {
+    if(isOtp.attempt >= 5){
+      return res.status(400).json("invalid request")
+    }
     if (isOtp.createdon + 1200 * 1000 < new Date().getTime()) {
       return res.status(400).json("Session expired");
     }
@@ -3858,25 +4233,25 @@ exports.resendotp = async (req, res) => {
     if (otpreq === "block") {
       return;
     }
-
     if (otpreq.modifiedCount > 0) {
-      const txtotp = await axios
-        .post("https://www.fast2sms.com/dev/bulkV2", txtdata, customConfig)
-        .then((res) => {
-          return res;
-        })
-        .catch((error) => {
-          res.status(500).json("failed to fetch data");
-          return "block";
-        });
-      if (txtotp === "block") {
-        return;
-      }
-      if (txtotp.data.return) {
-        return res.json({ result: true });
-      } else {
-        return res.status(400).json("failed to send otp to your number");
-      }
+      return res.json({ result: true });
+      // const txtotp = await axios
+      //   .post("https://www.fast2sms.com/dev/bulkV2", txtdata, customConfig)
+      //   .then((res) => {
+      //     return res;
+      //   })
+      //   .catch((error) => {
+      //     res.status(500).json("failed to fetch data");
+      //     return "block";
+      //   });
+      // if (txtotp === "block") {
+      //   return;
+      // }
+      // if (txtotp.data.return) {
+      //   return res.json({ result: true });
+      // } else {
+      //   return res.status(400).json("failed to send otp to your number");
+      // }
     } else {
       return res.status(400).json("failed to send otp to your number");
     }
@@ -3958,6 +4333,7 @@ exports.driver_forgot_pass = async (req, res) => {
         count: 0,
       },
       senton: "phone",
+      attempt:0
     });
     const sresult = await otpreq
       .save()
@@ -4032,7 +4408,11 @@ exports.driver_reset_pass = async (req, res) => {
   ) {
     return res.status(400).json("invalid data type");
   }
-  if (!validator.isEmail(email) || !validator.isMobilePhone(phone, "en-IN") || phone.length > 10) {
+  if (
+    !validator.isEmail(email) ||
+    !validator.isMobilePhone(phone, "en-IN") ||
+    phone.length > 10
+  ) {
     return res.status(400).json("Invalid request");
   }
   if (password !== cPassword) {
@@ -4068,6 +4448,30 @@ exports.driver_reset_pass = async (req, res) => {
     return;
   }
   if (isotp) {
+    if(isotp.attempt >= 5){
+      return res.status(400).json("Maximum request attempted")
+    }
+    if (code !== isotp.code) {
+      res.status(400).json("Invalid otp");
+      const upotp = await Otp.updateOne(
+        {
+          email: regex,
+          phone: phone,
+          for: "driver",
+          type: "forgotpass",
+          senton: "phone",
+        },
+        { attempt: isotp.attempt + 1 }
+      )
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          res.status(500).json("failed to fetch data");
+          return "block";
+        });
+        return
+    }
     if (isotp.expiry > new Date().getTime()) {
       const delotp = await Otp.deleteMany({
         email: email,
@@ -4141,7 +4545,7 @@ exports.driver_resendotp = async (req, res) => {
     typeof phone !== "string" ||
     typeof rsn !== "string" ||
     !validator.isEmail(email) ||
-    !validator.isMobilePhone(phone, "en-IN")||
+    !validator.isMobilePhone(phone, "en-IN") ||
     phone.length > 10
   ) {
     return res.status(400).json("Invalid request");
@@ -4191,6 +4595,9 @@ exports.driver_resendotp = async (req, res) => {
     return;
   }
   if (isOtp) {
+    if(isOtp.attempt >= 5){
+      return res.status(400).json("invalid request")
+    }
     if (isOtp.createdon + 1200 * 1000 < new Date().getTime()) {
       return res.status(400).json("Session expired");
     }

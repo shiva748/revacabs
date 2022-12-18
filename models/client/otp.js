@@ -12,6 +12,7 @@ const otp_req = new mongoose.Schema({
     count: { type: Number },
   },
   senton: { type: String, required: true },
+  attempt:{type:Number}
 });
 const OTP = new mongoose.model("otp", otp_req);
 module.exports = OTP;

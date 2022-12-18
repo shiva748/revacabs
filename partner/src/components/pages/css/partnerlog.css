@@ -16,6 +16,13 @@
   justify-content: space-around;
   align-items: center;
 }
+.cntr{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 0px;
+}
 .log-container {
   width: 300px;
   max-width: 95%;

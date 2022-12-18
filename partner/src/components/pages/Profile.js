@@ -106,7 +106,7 @@ const Profile = () => {
                 <FaUser style={{ marginRight: "5px" }} />
                 About
               </div>
-              <div
+              {/* <div
                 className={vwst === "sts" ? "tgl-itm tgl-itmo" : "tgl-itm"}
                 onClick={() => {
                   setvwst("sts");
@@ -114,11 +114,10 @@ const Profile = () => {
               >
                 <FaChartLine style={{ marginRight: "5px" }} />
                 Stats
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="dtld-cntnt">
-            {vwst === "abt" ? (
               <table className="dtl-tbl">
                 <tbody>
                   <tr>
@@ -143,36 +142,7 @@ const Profile = () => {
                   </tr>
                 </tbody>
               </table>
-            ) : (
-              <table className="dtl-tbl">
-                <tbody>
-                  <tr>
-                    <td>Vehicle count</td>
-                    <td>{Userdata.vehicles}</td>
-                  </tr>
-                  <tr>
-                    <td>Driver Count</td>
-                    <td>{Userdata.drivers}</td>
-                  </tr>
-                  <tr>
-                    <td>Trips executed</td>
-                    <td>{Userdata.trips}</td>
-                  </tr>
-                  <tr>
-                    <td>Earnings</td>
-                    <td>₹{Userdata.earnings}</td>
-                  </tr>
-                  <tr>
-                    <td>Penalties</td>
-                    <td>₹{Userdata.penalties}</td>
-                  </tr>
-                  <tr>
-                    <td>Bookings posted</td>
-                    <td>{Userdata.bookingposted}</td>
-                  </tr>
-                </tbody>
-              </table>
-            )}
+            
           </div>
         </div>
       )}

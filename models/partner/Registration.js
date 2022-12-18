@@ -101,6 +101,7 @@ const partner = new mongoose.Schema({
     aadh: { type: Boolean },
     dl: { type: Boolean },
   },
+  phonever:{type: Boolean},
   tokens: [
     {
       token: {

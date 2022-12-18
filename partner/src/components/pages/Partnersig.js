@@ -12,6 +12,22 @@ import validator from "validator";
 import { FcApproval } from "react-icons/fc";
 import { Helmet } from "react-helmet";
 const Partnersig = () => {
+  const [count, setcount] = useState(60);
+  const [over, setover] = useState(true);
+  function timer() {
+    setover(false);
+    let time = 60;
+    let timer1 = setInterval(() => {
+      if (time <= 1) {
+        clearInterval(timer1);
+        setover(true);
+        setcount(60);
+      } else {
+        time--;
+        setcount(time);
+      }
+    }, 1000);
+  }
   const history = useHistory();
   if (localStorage.islogged === "y") {
     history.push("/dashboard");
@@ -66,7 +82,9 @@ const Partnersig = () => {
     phone: { display: false, message: "" },
     password: { display: false, message: "" },
     cPassword: { display: false, message: "" },
+    otp:{display:false, message:""}
   };
+  const [ver, setver] = useState({display:false, otp:"", ldng:false});
   const [error, seterror] = useState(ert);
   const isfirstName = () => {
     var pattern = /^[a-zA-Z]{2,50}$/;
@@ -235,7 +253,6 @@ const Partnersig = () => {
         type: "danger",
       });
     } else {
-      setrdata(dr);
       setldngst(false);
       setalert({
         display: true,
@@ -243,13 +260,83 @@ const Partnersig = () => {
         message: `${data.message}`,
         type: "green",
       });
-      setTimeout(() => {
-        history.push("/login")
-      }, 2000);
+      setver({...ver, display:true})
+      timer()
       return
     }
   };
+// === === === reqverification === === === //
 
+const resendotp = async () => {
+  if (!over) {
+    return;
+  } else {
+    setover(false);
+  }
+  const { email, phone } = rdata;
+  if (!email || !phone) {
+    return setalert({
+      display: true,
+      title: "",
+      message: `Please fill all the fields`,
+      type: "danger",
+    });
+  }
+  setver({ ...ver, ldng: true });
+  const ores = await fetch("/partner/resend-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      phone,
+      rsn: "verification",
+    }),
+  });
+  const ordata = await ores.json();
+  if (ordata.result) {
+    setver({...ver, ldng:false})
+    timer();
+    return true;
+  } else {
+    return false;
+  }
+};
+const verifyreg = async (e) => {
+  e.preventDefault()
+  const { email, phone} = rdata;
+  const code = ver.otp;
+  if (!code || !email || !phone) {
+    return setalert({
+      display: true,
+      title: "",
+      message: `Please fill all the fields`,
+      type: "danger",
+    });
+  }
+  setver({ ...ver, ldng: true });
+  const res = await fetch("/partner/register/verify", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      phone,
+      code
+    }),
+  });
+  const data = await res.json();
+  if (res.status === 200) {
+    history.push("/login")
+  } else {
+    setver({...ver, ldng:false})
+    return setalert({
+      display: true,
+      title: "",
+      message: data,
+      type: "danger",
+    });
+  }
+};
   return (
     <>
       <Helmet>
@@ -273,6 +360,51 @@ const Partnersig = () => {
       </div>
       <section className="partner-sig" style={{ height: `${hgt}px` }}>
         <div className={ldngst ? "ovrly-ad apltn-con" : "apltn-con"}>
+          {ver.display?
+          <><div className="apltn-hd">Otp Verification</div>
+          <form id="prtnr-rgstr">
+          <div className="rgstr-row">
+              <span className="bold-txt rgstr-txt">Please enter the otp</span>
+              <input
+                type="text"
+                className="rgstr-inpt"
+                placeholder="Otp"
+                name="otp"
+                onChange={(e)=>{
+                  setver({...ver, otp:e.target.value})
+                }}
+                value={ver.otp}
+                onFocus={() =>
+                  seterror({
+                    ...error,
+                    // eslint-disable-next-line
+                    ["otp"]: { display: false, message: "" },
+                  })
+                }
+              />
+              {error.otp.display ? (
+                <span className="input-err">{error.otp.message}</span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="form-row" style={{justifyContent:"unset"}}>
+            <div className={ver.ldng ? "ldng-lnk" : ""}>
+              <span onClick={resendotp} className="blu-txt">
+                Resend Otp {over ? "?" : `in ${count} sec ?`}
+              </span>
+            </div>
+          </div>
+            <div>
+              <button
+                type="submit"
+                className={ver.ldng ? "rgstr-btn ldng-btn" : "rgstr-btn"}
+                onClick={verifyreg}
+              >
+                <span>Submit Otp</span>
+              </button>
+            </div>
+            </form></>:<>
           <div className="apltn-hd">Start registration</div>
           <form id="prtnr-rgstr">
             <div className="rgstr-row">
@@ -435,7 +567,7 @@ const Partnersig = () => {
                 <span>Register</span>
               </button>
             </div>
-          </form>
+          </form></>}
         </div>
         <div className="prcs-con">
           <p className="prcs-hd">Registration process</p>

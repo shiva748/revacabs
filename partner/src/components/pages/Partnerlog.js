@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import "./css/partnerlog.css";
-import {
-  FaUserAlt,
-  FaHandshake,
-  FaTimes,
-  FaTimesCircle,
-} from "react-icons/fa";
+import { FaUserAlt, FaHandshake, FaTimes, FaTimesCircle } from "react-icons/fa";
 import { FcApproval } from "react-icons/fc";
 import { BsShieldLockFill } from "react-icons/bs";
 import { NavLink, useHistory } from "react-router-dom";
@@ -17,6 +12,7 @@ const Partnerlog = () => {
     email: "",
     password: "",
   };
+  const [ver, setver] = useState({display:false, ldng:false, details:{email:"", phone:""}, otp:""});
   const [ldngst, setldngst] = useState(false);
   const [rdata, setrdata] = useState(dr);
   const [alert, setalert] = useState({
@@ -72,9 +68,20 @@ const Partnerlog = () => {
       });
     } else {
       if (data.result) {
-        localStorage.setItem("islogged", "y");
-        setrdata(dr);
-        history.push("/dashboard");
+        if (data.pvr) {
+          setalert({
+            display: true,
+            title: "",
+            message: data.message,
+            type: "green",
+          });
+          setver({...ver, display:true, details:data.details})
+          timer()
+        } else {
+          localStorage.setItem("islogged", "y");
+          setrdata(dr);
+          history.push("/dashboard");
+        }
       } else {
         setalert({
           display: true,
@@ -91,6 +98,7 @@ const Partnerlog = () => {
   const ert = {
     email: { display: false, message: "" },
     password: { display: false, message: "" },
+    otp:{display:false, message:""}
   };
   const [error, seterror] = useState(ert);
   const isemail = () => {
@@ -131,6 +139,93 @@ const Partnerlog = () => {
     }
     return error;
   };
+  const resendotp = async () => {
+    if (!over) {
+      return;
+    } else {
+      setover(false);
+    }
+    const { email, phone } = ver.details;
+    if (!email || !phone) {
+      return setalert({
+        display: true,
+        title: "",
+        message: `Some error occured`,
+        type: "danger",
+      });
+    }
+    setver({ ...ver, ldng: true });
+    const ores = await fetch("/partner/resend-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        phone,
+        rsn: "verification",
+      }),
+    });
+    const ordata = await ores.json();
+    if (ordata.result) {
+      setver({...ver, ldng:false})
+      timer();
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const [count, setcount] = useState(60);
+  const [over, setover] = useState(true);
+  function timer() {
+    setover(false);
+    let time = 60;
+    let timer1 = setInterval(() => {
+      if (time <= 1) {
+        clearInterval(timer1);
+        setover(true);
+        setcount(60);
+      } else {
+        time--;
+        setcount(time);
+      }
+    }, 1000);
+  }
+  const verifyreg = async (e) => {
+    e.preventDefault()
+    const { email, phone} = ver.details;
+    const code = ver.otp;
+    console.log(email, phone, code)
+    if (!code || !email || !phone) {
+      return setalert({
+        display: true,
+        title: "",
+        message: `Please fill all the fields`,
+        type: "danger",
+      });
+    }
+    setver({ ...ver, ldng: true });
+    const res = await fetch("/partner/register/verify", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        phone,
+        code
+      }),
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      setver({display:false,ldng:false, details:{email:"", phone:""}, otp:""})
+    } else {
+      setver({...ver, ldng:false})
+      return setalert({
+        display: true,
+        title: "",
+        message: `${data.error}`,
+        type: "danger",
+      });
+    }
+  };
   return (
     <>
       <Helmet>
@@ -153,7 +248,41 @@ const Partnerlog = () => {
         </NavLink>
       </div>
       <section className="partner-log">
-        <div className="log-container">
+      <div className="log-container">
+        {ver.display?
+        <div className="cntr">
+        <div className="apltn-hd">Otp Verification</div>
+          <form id="prtnr-rgstr">
+          <div className="rgstr-row">
+              <span className="bold-txt rgstr-txt">Please enter the otp</span>
+              <input
+                type="text"
+                className="rgstr-inpt"
+                placeholder="Otp"
+                name="otp"
+                onChange={(e)=>{setver({...ver, otp:e.target.value})}}
+                value={ver.otp}
+              />
+            </div>
+            <div className="form-row" style={{justifyContent:"unset"}}>
+            <div className={ver.ldng ? "ldng-lnk" : ""}>
+              <span onClick={resendotp} className="blu-txt">
+                Resend Otp {over ? "?" : `in ${count} sec ?`}
+              </span>
+            </div>
+          </div>
+            <div>
+              <button
+                type="submit"
+                className={ver.ldng ? "rgstr-btn ldng-btn" : "rgstr-btn"}
+                onClick={verifyreg}
+              >
+                <span>Submit Otp</span>
+              </button>
+            </div>
+            </form>  
+        </div>:
+        <>
           <div className="log-top">
             <FaHandshake />
           </div>
@@ -236,7 +365,7 @@ const Partnerlog = () => {
               <span>Driver login ?</span>
             </NavLink>
           </div>
-        </div>
+        </>}</div>
       </section>
       {alert.display ? (
         alert.type === "danger" ? (

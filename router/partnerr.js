@@ -4,11 +4,14 @@ const partnercont = require("../controller/partnercontroller");
 const cookie_par = require("cookie-parser");
 routers.use(cookie_par());
 const verifytoken = require("../Middleware/partnerauth");
-const { verify } = require("jsonwebtoken");
 
 // === === === register route === === === //
 
 routers.post("/register", partnercont.register_partner);
+
+// === === === verify registration otp === === === //
+
+routers.post("/register/verify", partnercont.ver_reg_otp);
 
 // === === === login route === === === //
 
