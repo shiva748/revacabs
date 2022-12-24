@@ -864,19 +864,20 @@ exports.partner_verify = async (req, res) => {
       return res.status(422).json("Invalid dl validity date selected");
     }
     const isdl = () => {
-      const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
+      
+      // const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
       const str = dlNumber;
-      let m;
-      let matchs = 0;
-      while ((m = regex.exec(str)) !== null) {
-        if (m.index === regex.lastIndex) {
-          regex.lastIndex++;
-        }
-        m.forEach((match, groupIndex) => {
-          matchs++;
-        });
-      }
-      if (matchs !== 5) {
+      // let m;
+      // let matchs = 0;
+      // while ((m = regex.exec(str)) !== null) {
+      //   if (m.index === regex.lastIndex) {
+      //     regex.lastIndex++;
+      //   }
+      //   m.forEach((match, groupIndex) => {
+      //     matchs++;
+      //   });
+      // }
+      if (str.length > 20) {
         return false;
       } else {
         return true;
@@ -1653,19 +1654,19 @@ exports.partner_updatedriver = async (req, res) => {
         return res.status(500).json("invalid data type");
       }
       const isdl = () => {
-        const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
+        // const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
         const str = data.dlNumber;
-        let m;
-        let matchs = 0;
-        while ((m = regex.exec(str)) !== null) {
-          if (m.index === regex.lastIndex) {
-            regex.lastIndex++;
-          }
-          m.forEach((match, groupIndex) => {
-            matchs++;
-          });
-        }
-        if (matchs !== 5) {
+        // let m;
+        // let matchs = 0;
+        // while ((m = regex.exec(str)) !== null) {
+        //   if (m.index === regex.lastIndex) {
+        //     regex.lastIndex++;
+        //   }
+        //   m.forEach((match, groupIndex) => {
+        //     matchs++;
+        //   });
+        // }
+        if (str.length > 20) {
           return false;
         } else {
           return true;

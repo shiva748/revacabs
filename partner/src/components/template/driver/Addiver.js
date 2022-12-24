@@ -280,25 +280,11 @@ const Addriver = (recived) => {
     }
   };
   const isdl = () => {
-    const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
     const str = frmdata.dlNumber;
-    let m;
-    let matchs = 0;
-    while ((m = regex.exec(str)) !== null) {
-      if (m.index === regex.lastIndex) {
-        regex.lastIndex++;
-      }
-      // eslint-disable-next-line
-      m.forEach((match, groupIndex) => {
-        // console.log(`Found match, group ${groupIndex}: ${match}`);
-        matchs++;
-      });
-    }
-    if (matchs !== 5) {
+    if (str.length>20) {
       seterrs({
         ...errs,
-        // eslint-disable-next-line
-        ["dlNumber"]: {
+        dlNumber: {
           display: true,
           message: "Please enter a valid DL Number",
         },
@@ -307,6 +293,33 @@ const Addriver = (recived) => {
     } else {
       return true;
     }
+    // const regex = /^([A-Z]{2})(\d{2}|\d{3})[a-zA-Z]{0,1}(\d{4})(\d{7})$/gm;
+    // const str = frmdata.dlNumber;
+    // let m;
+    // let matchs = 0;
+    // while ((m = regex.exec(str)) !== null) {
+    //   if (m.index === regex.lastIndex) {
+    //     regex.lastIndex++;
+    //   }
+    //   // eslint-disable-next-line
+    //   m.forEach((match, groupIndex) => {
+    //     // console.log(`Found match, group ${groupIndex}: ${match}`);
+    //     matchs++;
+    //   });
+    // }
+    // if (matchs !== 5) {
+    //   seterrs({
+    //     ...errs,
+    //     // eslint-disable-next-line
+    //     ["dlNumber"]: {
+    //       display: true,
+    //       message: "Please enter a valid DL Number",
+    //     },
+    //   });
+    //   return false;
+    // } else {
+    //   return true;
+    // }
   };
   const isvalid = () => {
     let error = false;
