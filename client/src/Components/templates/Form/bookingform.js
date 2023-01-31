@@ -363,20 +363,20 @@ const Bookingform = () => {
   useEffect(() => {
     const closeDropdown = (e) => {
       if (
-        e.path[0].tagName !== "INPUT" &&
-        !["from", "to", "city", "tourcity"].some((itm) => itm === e.path[0].id)
+        e.srcElement.nodeName !== "INPUT" &&
+        !["from", "to", "city", "tourcity"].some((itm) => itm === e.srcElement.id)
       ) {
         setshowsug(false);
         setendsug(false);
       } else if (
-        e.path[0].id === "from" ||
-        e.path[0].id === "city" ||
-        e.path[0].id === "tourcity"
+        e.srcElement.id === "from" ||
+        e.srcElement.id === "city" ||
+        e.srcElement.id === "tourcity"
       ) {
-        setendsug(false);
+        setendsug(false); 
         setshowsug(true);
         disableer("fromer");
-      } else if (e.path[0].id === "to") {
+      } else if (e.srcElement.id === "to") {
         setendsug(true);
         disableer("toer");
         setshowsug(false);

@@ -164,8 +164,8 @@ const Tourpackage = () => {
   useEffect(() => {
     const closeDropdown = (e) => {
       if (
-        e.path[0].tagName !== "INPUT" &&
-        !["tourcity"].some((itm) => itm === e.path[0].id)
+        e.srcElement.nodeName !== "INPUT" &&
+        !["tourcity"].some((itm) => itm === e.srcElement.id)
       ) {
         setdis(false)
       }

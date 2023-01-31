@@ -407,15 +407,15 @@ const Ongoing = () => {
   useEffect(() => {
     const closeDropdown = (e) => {
       if (
-        e.path[0].tagName !== "INPUT" &&
-        !["from", "to"].some((itm) => itm === e.path[0].id)
+        e.srcElement.nodeName !== "INPUT" &&
+        !["from", "to"].some((itm) => itm === e.srcElement.id)
       ) {
         setdis({from:false, to:false})
       } else if (
-        e.path[0].id === "from"
+        e.srcElement.id === "from"
       ) {
         setdis({from:true, to:false})
-      } else if (e.path[0].id === "to") {
+      } else if (e.srcElement.id === "to") {
         setdis({from:false, to:true})
       }
     };
