@@ -25,6 +25,13 @@ require("./db/conn");
 
 //==== ==== ==== static ==== ==== ====//
 const path = require("path");
+app.get("/.well-known/acme-challenge/UX-lZaL1D_rkycSsiKcvlmQxLIO6cTSvxsc-EBpssvY", (req, res)=>{
+  options = {
+    root: path.join(__dirname),
+  };
+  fileName = "a.txt";
+res.sendFile(fileName, options)
+})
 app.use(express.static(`${path.join(__dirname, "/public/images/")}`));
 // app.use(express.static(`${path.join(__dirname, "/public/images/")}`));
 
@@ -54,6 +61,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api", clientr);
 app.use("/partner", partnerr);
 app.use("/api/public", publicr);
+
 app.use("/payment", paymentr);
 app.use("/oceannodes", admnr);
 app.use("/driver", driverr);
