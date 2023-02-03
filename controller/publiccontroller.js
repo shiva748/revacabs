@@ -45,6 +45,27 @@ exports.autocomplete = async (req, res) => {
   }
 };
 
+// === === === export city === === === //
+
+exports.cts = async(req, res)=>{
+  const suggest = await City.find()
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      res.status(500).json("failed to fetch data");
+      return "block";
+    });
+  if (suggest === "block") {
+    return;
+  }
+  if (suggest) {
+    return res.json(suggest);
+  } else {
+    return res.json([]);
+  }
+}
+
 // === === === locality lstr === === === //
 
 exports.locality = async (req, res) => {

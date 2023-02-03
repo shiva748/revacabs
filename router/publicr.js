@@ -8,6 +8,10 @@ const cookie_par = require("cookie-parser");
 
 routers.post("/autocomplete", publiccont.autocomplete);
 
+// === === === export city === === === //
+
+routers.get("/catalon", publiccont.cts)
+
 // === === === locality lstr === === === //
 
 routers.post("/locality", publiccont.locality);

@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ImLocation2 } from "react-icons/im";
 import { useHistory } from "react-router-dom";
+import { matchSorter } from "match-sorter";
 
 const Bookingform = () => {
   const history = useHistory();
@@ -68,57 +69,71 @@ const Bookingform = () => {
     settimear(timearray);
   };
   //time
-  const [def, setdef] = useState([]);
-  const [suggest, setsuggest] = useState(def);
 
   //search api
+  const [suggest, setsuggest] = useState([]);
   const [showsug, setshowsug] = useState(false);
-  const firstload = async ()=>{
-    const res = await fetch("/api/public/autocomplete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ frst:true}),
-        });
-        const data = await res.json();
-        setdef(data)
-        setsuggest(data)
-        setendcity(data)
-      
-  }
+  const [catalon, setcatalon] = useState([]);
+  const getcatalon = async () => {
+    // try {
+    let catalan = JSON.parse(localStorage.getItem("catalan"));
+    if (!catalan) {
+      const res = await fetch("/api/public/catalon", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await res.json();
+      localStorage.setItem("catalan", JSON.stringify(data));
+      catalan = data;
+    }
+    setcatalon(catalan);
+    setsuggest(catalan.slice(0, 20));
+    setendcity(catalan.slice(0,20));
+    // } catch (err) {}
+  };
+  useEffect(() => {
+    getcatalon();
+    // eslint-disable-next-line
+  }, []);
+
   const autoComplete = async (e) => {
-    try {
-      if (e.target.value <= 0) {
-        setsuggest(def);
-        return;
-      } else {
-        const res = await fetch("/api/public/autocomplete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ key: e.target.value }),
-        });
-        const data = await res.json();
-        setsuggest(data);
-      }
-    } catch (err) {}
+    let cts = catalon;
+    let key = e.target.value;
+    if (key <= 0) {
+      setsuggest(catalon.slice(0, 20));
+    } else {
+      let ct = matchSorter(cts, key, {
+        keys: ["cityname"],
+        threshold: matchSorter.rankings.WORD_STARTS_WITH,
+      });
+      setsuggest(ct);
+    }
+    if (!showsug) {
+      setshowsug(true);
+    }
   };
   //toautocomplete
   const [endsug, setendsug] = useState(false);
-  const [endcity, setendcity] = useState(def);
+  const [endcity, setendcity] = useState([]);
   const endsuggest = async (e) => {
-    try {
-      if (e.target.value <= 0) {
-        setendcity(def);
-        return;
-      } else {
-        const res = await fetch("/api/public/autocomplete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ key: e.target.value }),
-        });
-        const data = await res.json();
-        setendcity(data);
-      }
-    } catch (err) {}
+    let cts = catalon;
+    let key = e.target.value;
+    if (key <= 0) {
+      setendcity(catalon.slice(0, 20));
+    } else {
+      let ct = matchSorter(cts, key, {
+        keys: ["cityname"],
+        threshold: matchSorter.rankings.WORD_STARTS_WITH,
+      });
+      setendcity(ct);
+    }
+    if (!endsug) {
+      setendsug(true);
+    }
   };
   //search api
   //o data
@@ -248,7 +263,7 @@ const Bookingform = () => {
       returnater: { display: false, message: "" },
     };
     if (
-      !suggest.some(
+      !catalon.some(
         (e) => e.cityname === odata.from && e.citycode === odata.fromcode
       )
     ) {
@@ -302,7 +317,7 @@ const Bookingform = () => {
     }
     if (odata.bookingtype === "outstation") {
       if (
-        !endcity.some(
+        !catalon.some(
           (e) => e.cityname === odata.to && e.citycode === odata.tocode
         )
       ) {
@@ -357,14 +372,13 @@ const Bookingform = () => {
   const [outstation, setoutstation] = useState(true);
   const [local, setlocal] = useState(false);
   const [tour, settour] = useState(false);
-  useEffect(()=>{
-    firstload()
-  }, []);
   useEffect(() => {
     const closeDropdown = (e) => {
       if (
         e.srcElement.nodeName !== "INPUT" &&
-        !["from", "to", "city", "tourcity"].some((itm) => itm === e.srcElement.id)
+        !["from", "to", "city", "tourcity"].some(
+          (itm) => itm === e.srcElement.id
+        )
       ) {
         setshowsug(false);
         setendsug(false);
@@ -373,7 +387,7 @@ const Bookingform = () => {
         e.srcElement.id === "city" ||
         e.srcElement.id === "tourcity"
       ) {
-        setendsug(false); 
+        setendsug(false);
         setshowsug(true);
         disableer("fromer");
       } else if (e.srcElement.id === "to") {

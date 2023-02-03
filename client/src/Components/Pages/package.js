@@ -9,6 +9,7 @@ import "./css/package.css";
 import Loading from "../templates/loading/Loading";
 import Enquiry from "../templates/tour/Enquiry";
 import { Helmet } from "react-helmet";
+import { matchSorter } from "match-sorter";
 const Tourpackage = () => {
   const history = useHistory();
   const [alertd, setalertd] = useState({
@@ -56,7 +57,7 @@ const Tourpackage = () => {
             title: "",
           });
         }
-        if (!autoco.some((e) => e.cityname === cts)) {
+        if (!catalon.some((e) => e.cityname === cts)) {
           return setalertd({
             display: true,
             title: "",
@@ -134,30 +135,49 @@ const Tourpackage = () => {
         setautoco(data)
         setdef(data)
   }
+  const [catalon, setcatalon] = useState([]);
+  const getcatalon = async () => {
+    // try {
+    let catalan = JSON.parse(localStorage.getItem("catalan"));
+    if (!catalan) {
+      const res = await fetch("/api/public/catalon", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await res.json();
+      localStorage.setItem("catalan", JSON.stringify(data));
+      catalan = data;
+    }
+    setcatalon(catalan);
+    setautoco(catalan.slice(0, 20));
+    // } catch (err) {}
+  };
+
   useEffect(() => {
     resizer();
+    getcatalon();
     listpackage();
     firstload()
     // eslint-disable-next-line
   }, []);
   const autocomplete = async (e) => {
-    if (e.target.value <= 0) {
-      setautoco(def);
-      return;
-    }
-    if (typeof e.target.value !== "string") {
-      return;
-    }
-    const res = await fetch("/api/public/autocomplete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: e.target.value }),
-    });
-    const data = await res.json();
-    if (res.status !== 200) {
-      return setautoco([]);
+    let cts = catalon;
+    let key = e.target.value;
+    if (key <= 0) {
+      setautoco(catalon.slice(0, 20));
     } else {
-      return setautoco(data);
+      let ct = matchSorter(cts, key, {
+        keys: ["cityname"],
+        threshold: matchSorter.rankings.WORD_STARTS_WITH,
+      });
+      setautoco(ct);
+    }
+    if (!dis) {
+      setdis(true);
     }
   };
   const [loading, setloading] = useState(true);
@@ -230,7 +250,7 @@ const Tourpackage = () => {
                       {dis? (
                         <div className="auto-con">
                           <div className="auto-wrapper">
-                            {autoco.map((itm, i) => {
+                            {Array.isArray(autoco)?<>{autoco.map((itm, i) => {
                               return (
                                 <div
                                   key={i}
@@ -254,8 +274,8 @@ const Tourpackage = () => {
                                     </div>
                                   </div>
                                 </div>
-                              );
-                            })}
+                              )})}</>:""
+                            }
                             {autoco.length <= 0 ? "No city Found" : ""}
                           </div>
                         </div>
@@ -276,8 +296,8 @@ const Tourpackage = () => {
                       >
                         <option value="">Select Days</option>
                         {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map(
-                          (itm) => (
-                            <option value={itm}>{itm}</option>
+                          (itm, i) => (
+                            <option value={itm} key={i}>{itm}</option>
                           )
                         )}
                       </select>
@@ -327,9 +347,9 @@ const Tourpackage = () => {
               {packages.length === 0 ? (
                 <div className="nrc-con"><img src="/icons/nrec.png" alt=""/><p className="nrc-txt">No Tour package found</p></div>
               ) : (
-                packages.map((itm) => {
+                packages.map((itm, i) => {
                   return (
-                    <div className="tr-crd marg" style={{ width: "360px" }}>
+                    <div className="tr-crd marg" style={{ width: "360px" }} key={i}>
                       <div className="tr-imgcon">
                         <img src={`/tour/${itm.id}/${itm.bnrimg}`} alt="" />
                         <p className="tr-drtn">
