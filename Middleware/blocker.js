@@ -3,14 +3,14 @@ const blocker = async (req, res, next) => {
     const data = req.body;
     const ip = ["::1", "::ffff:127.0.0.1"];
     // console.log(req.connection.remoteAddress)
-    if (!ip.some((itm) => itm === req.connection.remoteAddress)) {
-      console.log(req.connection.remoteAddress);
-      return res
-        .status(403)
-        .send(
-          "<h1> Forbidden </h1><p>You Don't have access to this server</p>"
-        );
-    }
+    // if (!ip.some((itm) => itm === req.connection.remoteAddress)) {
+    //   console.log(req.connection.remoteAddress);
+    //   return res
+    //     .status(403)
+    //     .send(
+    //       "<h1> Forbidden </h1><p>You Don't have access to this server</p>"
+    //     );
+    // }
     req.body = data;
     next();
   } catch (error) {
