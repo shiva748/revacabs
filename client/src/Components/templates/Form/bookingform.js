@@ -76,23 +76,20 @@ const Bookingform = () => {
   const [catalon, setcatalon] = useState([]);
   const getcatalon = async () => {
     // try {
-    let catalan = JSON.parse(localStorage.getItem("catalan"));
-    if (!catalan) {
-      const res = await fetch("/api/public/catalon", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await res.json();
-      localStorage.setItem("catalan", JSON.stringify(data));
-      catalan = data;
-    }
+    const res = await fetch("/api/public/catalon", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await res.json();
+    localStorage.setItem("catalan", JSON.stringify(data));
+    let catalan = data;
     setcatalon(catalan);
     setsuggest(catalan.slice(0, 20));
-    setendcity(catalan.slice(0,20));
+    setendcity(catalan.slice(0, 20));
     // } catch (err) {}
   };
   useEffect(() => {
